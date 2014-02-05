@@ -1,4 +1,6 @@
 #include"Game.h"
+#include<SDL2/SDL_image.h>
+#include<SDL2/SDL.h>
 #include<iostream>
 
 using namespace std;
@@ -36,6 +38,19 @@ int main(int argc, char** argv)
          cout << "SDL Renderer Initialization error. " << SDL_GetError() << endl;
          exit(-1); 
     }
+   
+    if (IMG_INIT_PNG != IMG_Init(IMG_INIT_PNG))
+    {
+         cout << "SDL Renderer Initialization error. " << SDL_GetError() << endl;
+         exit(-1); 
+    }
+    
+    /*
+    if (IMG_Init(IMG_INIT_PNG)!=IMG_INIT_PNG)
+    {
+         cout << "SDL Image Initialization Error. "  << endl;
+         exit(-1); 
+    }*/
 
     Game* plotfarmerGame = new Game(
         gameWindow,
@@ -76,4 +91,8 @@ void Game::gameMainLoop()
 
 void Game::update(){}
 
-void Game::render(){}
+void Game::render(){
+    SDL_SetRenderDrawColor(gameRenderer, 255, 0, 0, 255);
+    SDL_RenderClear(gameRenderer);
+    SDL_RenderPresent(gameRenderer);
+    }
