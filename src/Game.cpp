@@ -77,8 +77,11 @@ void Game::gameMainLoop()
     
     bool gameOver = false;
     SDL_Event e;
+    long lastTick = SDL_GetTicks();
+    long thisTick;
     while (!gameOver)
     {
+        thisTick = SDL_GetTicks();
         while(SDL_PollEvent(&e)!=0)
         {
             if(e.type == SDL_QUIT)
@@ -86,13 +89,15 @@ void Game::gameMainLoop()
             gameOver = true;
             }
         }
-        update();
+        update(thisTick-lastTick);
         render();
+        lastTick = thisTick;
     }
             
 }
 
-void Game::update(){
+void Game::update(long dt){
+    player->update(dt);
     }
 
 void Game::render(){

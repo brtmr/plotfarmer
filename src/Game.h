@@ -15,7 +15,7 @@ class Game{
         void render();
 
     private:
-        void update();
+        void update(long);
         bool init_SDL;
         SDL_Window*   gameWindow;       
         SDL_Renderer* gameRenderer;       
