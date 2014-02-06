@@ -47,7 +47,7 @@ int main(int argc, char** argv)
                 << endl;
          exit(-1); 
     }
-    
+   
     if (IMG_Init(IMG_INIT_PNG)!=IMG_INIT_PNG)
     {
          cout << "SDL Image Initialization Error. "  << endl;
@@ -69,7 +69,7 @@ Game::Game(SDL_Window* w, SDL_Renderer* r)
 {
     gameWindow  =  w;
     gameRenderer = r;     
-    player = new Player(r);
+    player = new Player(gameRenderer);
 }
 
 void Game::gameMainLoop()
@@ -98,10 +98,8 @@ void Game::update(){
 void Game::render(){
     SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 255);
     SDL_RenderClear(gameRenderer);
-    /* Render Test*/
-    SDL_RenderCopy(
-        gameRenderer,
-        (player->textures.at(0)),
-        NULL,NULL); 
+   
+    player->render();
+
     SDL_RenderPresent(gameRenderer);
     }
