@@ -3,6 +3,7 @@
 
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_image.h>
+#include"Player.h"
 
 class Game{
     
@@ -18,6 +19,7 @@ class Game{
         bool init_SDL;
         SDL_Window*   gameWindow;       
         SDL_Renderer* gameRenderer;       
+        Player *player;
     };
 
 

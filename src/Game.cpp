@@ -1,4 +1,5 @@
 #include"Game.h"
+#include"Player.h"
 #include<SDL2/SDL_image.h>
 #include<SDL2/SDL.h>
 #include<iostream>
@@ -35,22 +36,23 @@ int main(int argc, char** argv)
 
     if (gameRenderer==NULL)
     {
-         cout << "SDL Renderer Initialization error. " << SDL_GetError() << endl;
+         cout << "SDL Renderer Initialization error. " << SDL_GetError() 
+                << endl;
          exit(-1); 
     }
    
     if (IMG_INIT_PNG != IMG_Init(IMG_INIT_PNG))
     {
-         cout << "SDL Renderer Initialization error. " << SDL_GetError() << endl;
+         cout << "SDL Renderer Initialization error. " << SDL_GetError() 
+                << endl;
          exit(-1); 
     }
     
-    /*
     if (IMG_Init(IMG_INIT_PNG)!=IMG_INIT_PNG)
     {
          cout << "SDL Image Initialization Error. "  << endl;
          exit(-1); 
-    }*/
+    }
 
     Game* plotfarmerGame = new Game(
         gameWindow,
@@ -67,6 +69,7 @@ Game::Game(SDL_Window* w, SDL_Renderer* r)
 {
     gameWindow  =  w;
     gameRenderer = r;     
+    player = new Player(r);
 }
 
 void Game::gameMainLoop()
@@ -89,10 +92,16 @@ void Game::gameMainLoop()
             
 }
 
-void Game::update(){}
+void Game::update(){
+    }
 
 void Game::render(){
-    SDL_SetRenderDrawColor(gameRenderer, 255, 0, 0, 255);
+    SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 255);
     SDL_RenderClear(gameRenderer);
+    /* Render Test*/
+    SDL_RenderCopy(
+        gameRenderer,
+        (player->textures.at(0)),
+        NULL,NULL); 
     SDL_RenderPresent(gameRenderer);
     }
