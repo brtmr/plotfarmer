@@ -5,6 +5,7 @@
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_image.h>
 #include"Player.h"
+#include"Tilemanager.h"
 
 class Game{
     
@@ -20,6 +21,7 @@ class Game{
         SDL_Window*   gameWindow;       
         SDL_Renderer* gameRenderer;       
         Player *player;
+        Tilemanager *tilemanager;
         std::vector<SDL_Rect*> clipRectangle;
     };
 

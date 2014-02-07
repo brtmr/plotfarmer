@@ -1,5 +1,6 @@
 #include"Game.h"
 #include"Player.h"
+#include"Tilemanager.h"
 #include<SDL2/SDL_image.h>
 #include<SDL2/SDL.h>
 #include<iostream>
@@ -70,6 +71,7 @@ Game::Game(SDL_Window* w, SDL_Renderer* r)
     gameWindow  =  w;
     gameRenderer = r;     
     player = new Player(gameRenderer);
+    tilemanager = new Tilemanager(gameRenderer);
 }
 
 void Game::gameMainLoop()
@@ -103,8 +105,10 @@ void Game::update(long dt){
 void Game::render(){
     SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 255);
     SDL_RenderClear(gameRenderer);
-   
+    
+    tilemanager->render();
     player->render();
+    
 
     SDL_RenderPresent(gameRenderer);
     }
