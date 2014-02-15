@@ -9,6 +9,7 @@ class Player{
     
     public:
         Player(SDL_Renderer*);
+        ~Player();
         void setSpeedX();
         void setSpeedY();
         void render();

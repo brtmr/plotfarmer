@@ -51,6 +51,12 @@ Player::Player(SDL_Renderer* renderer)
     speedX = 0.02;
 }
 
+Player::~Player()
+{
+    SDL_DestroyTexture(spritesheet);
+    SDL_DestroyRenderer(gameRenderer);
+}
+
 void Player::update(long dt)
 {
    posX = posX + speedX*dt;
@@ -62,7 +68,6 @@ void Player::update(long dt)
 
 void Player::render()
 {
-    
     SDL_RenderCopy(
         gameRenderer,
         spritesheet,

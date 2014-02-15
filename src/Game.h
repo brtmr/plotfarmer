@@ -22,7 +22,6 @@ class Game{
         SDL_Renderer* gameRenderer;       
         Player *player;
         Tilemanager *tilemanager;
-        std::vector<SDL_Rect*> clipRectangle;
     };
 
 

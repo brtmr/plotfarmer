@@ -9,6 +9,7 @@ class Tilemanager{
     public:
         
         Tilemanager(SDL_Renderer* r);
+        ~Tilemanager();
         void render();
         
     private:

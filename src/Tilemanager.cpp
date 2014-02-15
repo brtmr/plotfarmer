@@ -4,12 +4,12 @@
 #include<iostream>
 
 #define SCALE 4
-#define BLOCKSIZE 32
+#define BLOCKSIZE 16
 
 Tilemanager::Tilemanager(SDL_Renderer* r)
 {
     gameRenderer = r;
-    SDL_Surface* blox = IMG_Load("sprites/blox.png");
+    SDL_Surface* blox = IMG_Load("sprites/16blox.png");
     
     spritesheet = SDL_CreateTextureFromSurface(
         gameRenderer,
@@ -73,12 +73,18 @@ Tilemanager::Tilemanager(SDL_Renderer* r)
     
     levelTexture = SDL_CreateTexture(
         gameRenderer,
-        SDL_PIXELFORMAT_RGBA8888,  //Picking the first one may not be the best idea ...
-                                  //But how do you manage which one is supported?
+        SDL_PIXELFORMAT_RGBA8888,  
         SDL_TEXTUREACCESS_TARGET, 
         5 * SCALE * BLOCKSIZE,   //Warning! 5 is set as a magic number
         5 * SCALE * BLOCKSIZE);  //needs to be replaced by some int member
                                  //defining the current level size.
+}
+
+Tilemanager::~Tilemanager()
+{
+    SDL_DestroyRenderer(gameRenderer);
+    SDL_DestroyTexture(spritesheet);
+    SDL_DestroyTexture(levelTexture);
 }
 
 void Tilemanager::render()

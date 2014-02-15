@@ -62,6 +62,8 @@ int main(int argc, char** argv)
         
     plotfarmerGame->gameMainLoop();
     
+    delete plotfarmerGame;
+    
     SDL_Quit();
 }
 
@@ -73,6 +75,13 @@ Game::Game(SDL_Window* w, SDL_Renderer* r)
     player = new Player(gameRenderer);
     tilemanager = new Tilemanager(gameRenderer);
 }
+
+Game::~Game(){
+    SDL_DestroyRenderer(gameRenderer);
+    SDL_DestroyWindow(gameWindow);
+    delete player;
+    delete tilemanager;
+    }
 
 void Game::gameMainLoop()
 {
