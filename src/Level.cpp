@@ -3,12 +3,18 @@
 #include<vector>
 #include<fstream>
 
+#define BLOCKSIZE 16
+
 std::vector<std::vector<int>> dummyTiles();
 
 Level::Level()
 {
     
     tiles = dummyTiles();
+    width  = 10;
+    height = 10;
+    pixelHeight = height*BLOCKSIZE;
+    pixelWidth  = width*BLOCKSIZE;
     
 }
 
@@ -35,9 +41,9 @@ std::vector<std::vector<int>> dummyTiles()
         std::vector<int> row;
         for (int j=0; j<width; j++)
             {
-                if (i<3)  row.push_back(-1);
-                if (i==3) row.push_back(0);
-                if (i>3)  row.push_back(3);
+                if ( i<6)  row.push_back(-1);
+                if (i==6) row.push_back(0);
+                if ( i>6)  row.push_back(3);
             }
         rows.push_back(row);
     }

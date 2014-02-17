@@ -11,7 +11,10 @@ class Level
         ~Level();
         std::vector<std::vector<int>> tiles;
         bool isSolid(int,int);
-    
+        int height;
+        int width;
+        int pixelHeight;
+        int pixelWidth;
     private:
         
 };

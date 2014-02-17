@@ -73,9 +73,9 @@ Game::Game(SDL_Window* w, SDL_Renderer* r)
 {
     gameWindow  =  w;
     gameRenderer = r;     
-    player = new Player(gameRenderer);
-    tilemanager = new Tilemanager(gameRenderer, &level);
     level = Level();
+    player = new Player(gameRenderer, &level);
+    tilemanager = new Tilemanager(gameRenderer, &level);
 }
 
 Game::~Game(){
