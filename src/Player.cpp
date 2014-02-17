@@ -1,4 +1,5 @@
 #include"Player.h"
+#include"Spritesheet.h"
 #include<iostream>
 
 #define SCALE 4
@@ -6,55 +7,25 @@
 Player::Player(SDL_Renderer* renderer)
 {
 
-    /* load the spritesheet */
-    SDL_Surface* playSurf = IMG_Load("sprites/wiz.png");    
-    spritesheet = SDL_CreateTextureFromSurface( renderer, playSurf );
-    
-    
-    /* create Rectangles for clipping */
-    int w = playSurf->w/3;
-    int h = playSurf->  h;
-    
-    SDL_Rect rect1;
-    rect1.x = 0;
-    rect1.y = 0;
-    rect1.w = w;
-    rect1.h = h;
-
-    clipRectangles.push_back(rect1);
-
-    SDL_Rect rect2;
-    rect2.x = w;
-    rect2.y = 0;
-    rect2.w = w;
-    rect2.h = h;
-
-    clipRectangles.push_back(rect2);
-
-    SDL_Rect rect3;
-    rect3.x = 2*w;
-    rect3.y = 0;
-    rect3.w = w;
-    rect3.h = h;
-
-    clipRectangles.push_back(rect3);
-
     gameRenderer = renderer;
-
-    dstRect.x = 0;
-    dstRect.y = 0;
-    dstRect.w = SCALE*w;
-    dstRect.h = SCALE*h;
-
-    posX = 20;
+    /* load the spritesheet */
+    spritesheet = new Spritesheet("sprites/wiz.png",1,3,3,renderer);
+    
+    /* set initial position*/
+    posX = 5;
     posY = 20;
     speedX = 0.02;
+        
+    dstRect.x = 0;
+    dstRect.y = 0;
+    dstRect.w = SCALE*(spritesheet->singleWidth);
+    dstRect.h = SCALE*(spritesheet->singleHeight);
+
 }
 
 Player::~Player()
 {
-    SDL_DestroyTexture(spritesheet);
-    SDL_DestroyRenderer(gameRenderer);
+    delete spritesheet;
 }
 
 void Player::update(long dt)
@@ -70,7 +41,7 @@ void Player::render()
 {
     SDL_RenderCopy(
         gameRenderer,
-        spritesheet,
+        spritesheet->sprites,
         getCurrentRectangle(),
         &dstRect   
     ); 
@@ -86,5 +57,5 @@ SDL_Rect* Player::getCurrentRectangle()
     if (which % 4 == 2) i = 2;
     if (which % 4 == 3) i = 1;
 
-    return &(clipRectangles.at(i));
+    return &(spritesheet->clipRectangles.at(i));
 }

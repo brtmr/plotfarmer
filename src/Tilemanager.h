@@ -3,23 +3,25 @@
 
 #include<SDL2/SDL.h>
 #include<vector>
+#include"Spritesheet.h"
+#include"Level.h"
 
 class Tilemanager{
     
     public:
         
-        Tilemanager(SDL_Renderer* r);
+        Tilemanager(SDL_Renderer* r, Level* l);
         ~Tilemanager();
         void render();
         
     private:
         
         bool redraw;
-        int level[5][5];
         SDL_Renderer* gameRenderer;
-        SDL_Texture* spritesheet;
+        Spritesheet* spritesheet;
         SDL_Texture* levelTexture;
-        std::vector<SDL_Rect> clipRectangles;
+        void getClipRectangle(int n);
+        Level* level;
     
     };
     

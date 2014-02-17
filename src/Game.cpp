@@ -1,5 +1,6 @@
 #include"Game.h"
 #include"Player.h"
+#include"Level.h"
 #include"Tilemanager.h"
 #include<SDL2/SDL_image.h>
 #include<SDL2/SDL.h>
@@ -73,7 +74,8 @@ Game::Game(SDL_Window* w, SDL_Renderer* r)
     gameWindow  =  w;
     gameRenderer = r;     
     player = new Player(gameRenderer);
-    tilemanager = new Tilemanager(gameRenderer);
+    tilemanager = new Tilemanager(gameRenderer, &level);
+    level = Level();
 }
 
 Game::~Game(){

@@ -6,6 +6,8 @@
 #include<SDL2/SDL_image.h>
 #include"Player.h"
 #include"Tilemanager.h"
+#include"Level.h"
+
 
 class Game{
     
@@ -22,6 +24,7 @@ class Game{
         SDL_Renderer* gameRenderer;       
         Player *player;
         Tilemanager *tilemanager;
+        Level level;
     };
 
 

@@ -4,6 +4,7 @@
 #include<SDL2/SDL_image.h>
 #include<SDL2/SDL.h>
 #include<vector>
+#include"Spritesheet.h"
 
 class Player{
     
@@ -18,10 +19,9 @@ class Player{
             
     private:
         SDL_Rect dstRect;
-        SDL_Texture* spritesheet;
         SDL_Renderer* gameRenderer;
-        std::vector<SDL_Rect> clipRectangles;
         SDL_Rect* getCurrentRectangle();
+        Spritesheet* spritesheet;
         float speedX;
         float speedY;
         float posX;
