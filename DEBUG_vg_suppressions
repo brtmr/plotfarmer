@@ -1,0 +1,43 @@
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Param
+   ioctl(generic)
+   ...
+   obj:/usr/lib/x86_64-linux-gnu/dri/fglrx_dri.so
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Addr8
+   ...
+   obj:/usr/lib/x86_64-linux-gnu/dri/fglrx_dri.so
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   ...
+   obj:/usr/lib/x86_64-linux-gnu/dri/fglrx_dri.so
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Addr1
+   ...
+   obj:/usr/lib/x86_64-linux-gnu/dri/fglrx_dri.so
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Addr4
+   ...
+   obj:/usr/lib/x86_64-linux-gnu/dri/fglrx_dri.so
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Overlap
+   ...
+   obj:/usr/lib/x86_64-linux-gnu/dri/fglrx_dri.so
+   ...
+}
