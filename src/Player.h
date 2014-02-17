@@ -15,7 +15,7 @@ class Player{
         ~Player();
         void render();
         void update(long);
-
+        void setDirection(int d);
             
     private:
         //functions:
@@ -27,8 +27,8 @@ class Player{
         SDL_Rect* getCurrentRectangle();
         Level* level;
         Spritesheet* spritesheet;
-        float speedX;
         float speedY;
+        float speedX;
         float posX;
         float posY;
         int height;

@@ -6,6 +6,9 @@
 #include<SDL2/SDL.h>
 #include<iostream>
 
+#define DIRECTIONLEFT 0
+#define DIRECTIONRIGHT 1
+
 using namespace std;
 
 int main(int argc, char** argv)
@@ -101,6 +104,10 @@ void Game::gameMainLoop()
             {
             gameOver = true;
             }
+            if(e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
+            {
+                handleKey(e);
+            }
         }
         update(thisTick-lastTick);
         render();
@@ -108,6 +115,20 @@ void Game::gameMainLoop()
     }
             
 }
+
+void Game::handleKey(SDL_Event e){
+    if(e.type ==SDL_KEYDOWN)
+        {
+        if ( e.key.keysym.sym == SDLK_LEFT)
+            {
+            player->setDirection(DIRECTIONLEFT);
+            }
+        if ( e.key.keysym.sym == SDLK_RIGHT)
+            {
+            player->setDirection(DIRECTIONRIGHT);
+            }
+        }
+    }
 
 void Game::update(long dt){
     player->update(dt);

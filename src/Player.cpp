@@ -8,6 +8,7 @@
 #define SMALLOFFSET 0.001
 #define DIRECTIONLEFT 0
 #define DIRECTIONRIGHT 1
+#define SPEED 0.04
 
 Player::Player(SDL_Renderer* renderer, Level* l)
 {
@@ -109,6 +110,20 @@ void Player::handleCollision()
             inJump = false;
         }
     }
+}
+
+void Player::setDirection(int d)
+{
+    if (d == DIRECTIONLEFT)
+        {
+        direction = DIRECTIONLEFT;
+        speedX = -SPEED;
+        }
+    if (d == DIRECTIONRIGHT)
+        {
+        direction = DIRECTIONRIGHT;
+        speedX = SPEED;
+        }
 }
 
 bool Player::isColliding()

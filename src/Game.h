@@ -18,8 +18,11 @@ class Game{
         void render();
 
     private:
+        //methods
         void update(long);
         bool init_SDL;
+        void handleKey(SDL_Event);
+        //fields        
         SDL_Window*   gameWindow;       
         SDL_Renderer* gameRenderer;       
         Player *player;
