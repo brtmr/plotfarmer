@@ -9,7 +9,7 @@ http://libsdl.org
 
 build with make:   
 ```
-make Game
+make plotfarmer
 ```
 
 and run with
