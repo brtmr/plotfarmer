@@ -8,6 +8,8 @@ Level::Level()
     tiles = dummyTiles();
     width  = 20;
     height = 10;
+    unscaledHeight = height*BLOCKSIZE;
+    unscaledWidth = width*BLOCKSIZE;
     pixelHeight = height*SCALEDBLOCK;
     pixelWidth  = width*SCALEDBLOCK;
 }

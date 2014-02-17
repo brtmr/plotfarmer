@@ -18,6 +18,8 @@ class Level
         int width;
         int pixelHeight;
         int pixelWidth;
+        int unscaledWidth;
+        int unscaledHeight;
     private:
         
 };

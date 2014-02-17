@@ -41,23 +41,19 @@ void Player::update(long dt)
 {
     posX = posX + speedX*dt;
     posY = posY + speedY*dt;
-    
     speedY = speedY + GRAVITY*dt;
-    dstRect.x = SCALE*posX;
-    dstRect.y = SCALE*posY;
     
     /*
      * Dont let the player leave the level.
      */
-    
-    if ( posY+height > (level->pixelHeight) )
+    if ( posY+height > (level->unscaledHeight) )
     {
-        posY = (level->pixelHeight) - height - SMALLOFFSET;
+        posY = (level->unscaledHeight) - height - SMALLOFFSET;
         speedY = 0;
     }
-    if ( posX+width > (level->pixelWidth) )
+    if ( posX+width > (level->unscaledWidth) )
     {
-        posX = (level->pixelWidth) - width - SMALLOFFSET;
+        posX = (level->unscaledWidth) - width - SMALLOFFSET;
         speedX = 0;
     }
     if ( posY < 0 )
@@ -80,8 +76,6 @@ void Player::update(long dt)
     {
         handleCollision();
     }
-    
-
     
 }
 
@@ -150,6 +144,8 @@ bool Player::isColliding()
 
 void Player::render()
 {
+    dstRect.x = SCALE*posX;
+    dstRect.y = SCALE*posY;
     if (direction == DIRECTIONRIGHT)
     SDL_RenderCopy(
         gameRenderer,
