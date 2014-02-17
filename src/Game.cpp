@@ -15,9 +15,9 @@ int main(int argc, char** argv)
         "plotfarmer",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        1280,
-        768,
-        0);
+        1024,
+        600,
+        SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL);
     if (gameWindow==NULL)
     {
          cout << "SDL Window Initialization error. " << SDL_GetError() << endl;
