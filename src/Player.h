@@ -16,6 +16,8 @@ class Player{
         void render();
         void update(long);
         void setDirection(int d);
+        void stop();
+        void jump();
             
     private:
         //functions:

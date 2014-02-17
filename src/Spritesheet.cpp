@@ -1,8 +1,4 @@
 #include"Spritesheet.h"
-#include<SDL2/SDL.h>
-#include<SDL2/SDL_image.h>
-#include<vector>
-#include<iostream>
 
 /*
  * path is the filename of the spritesheet
@@ -23,7 +19,7 @@ Spritesheet::Spritesheet(std::string path, int m, int n, int p, SDL_Renderer* ga
         }
     singleWidth  = (spritesSurface->w)/n;
     singleHeight = (spritesSurface->h)/m;
-    //SDL_FreeSurface(spritesSurface);
+    SDL_FreeSurface(spritesSurface);
 }
 
 Spritesheet::~Spritesheet()

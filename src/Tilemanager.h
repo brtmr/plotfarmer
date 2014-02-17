@@ -1,10 +1,13 @@
 #ifndef TILEMANAGER_H
 #define TILEMANAGER_H
 
-#include<SDL2/SDL.h>
-#include<vector>
 #include"Spritesheet.h"
 #include"Level.h"
+#include"Constants.h"
+#include<SDL2/SDL.h>
+#include<SDL2/SDL_image.h>
+#include<iostream>
+#include<vector>
 
 class Tilemanager{
     

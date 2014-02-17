@@ -1,14 +1,8 @@
 #include"Player.h"
 #include"Spritesheet.h"
+#include"Constants.h"
 #include<iostream>
 
-#define SCALE 4
-#define GRAVITY 0.0004
-#define BLOCKSIZE 16
-#define SMALLOFFSET 0.001
-#define DIRECTIONLEFT 0
-#define DIRECTIONRIGHT 1
-#define SPEED 0.04
 
 Player::Player(SDL_Renderer* renderer, Level* l)
 {
@@ -25,6 +19,8 @@ Player::Player(SDL_Renderer* renderer, Level* l)
     posY = 40;
     speedY = -0.08;
     speedX = 0.04;
+    
+    direction = DIRECTIONRIGHT;
     
     dstRect.x = 0;
     dstRect.y = 0;
@@ -114,6 +110,7 @@ void Player::handleCollision()
 
 void Player::setDirection(int d)
 {
+    running = true;
     if (d == DIRECTIONLEFT)
         {
         direction = DIRECTIONLEFT;
@@ -124,6 +121,20 @@ void Player::setDirection(int d)
         direction = DIRECTIONRIGHT;
         speedX = SPEED;
         }
+}
+
+void Player::stop()
+{
+    speedX = 0;
+    running = false;
+}
+    
+void Player::jump()
+{
+    //cant jump while jumping
+    if (inJump) return;
+    speedY = -JUMPSPEED;
+    inJump = true;
 }
 
 bool Player::isColliding()
@@ -139,11 +150,22 @@ bool Player::isColliding()
 
 void Player::render()
 {
+    if (direction == DIRECTIONRIGHT)
     SDL_RenderCopy(
         gameRenderer,
         spritesheet->sprites,
         getCurrentRectangle(),
         &dstRect   
+    ); 
+    if (direction == DIRECTIONLEFT)
+    SDL_RenderCopyEx(
+        gameRenderer,
+        spritesheet->sprites,
+        getCurrentRectangle(),
+        &dstRect,
+        0,
+        NULL,
+        SDL_FLIP_HORIZONTAL
     ); 
 }
 

@@ -1,13 +1,4 @@
 #include"Game.h"
-#include"Player.h"
-#include"Level.h"
-#include"Tilemanager.h"
-#include<SDL2/SDL_image.h>
-#include<SDL2/SDL.h>
-#include<iostream>
-
-#define DIRECTIONLEFT 0
-#define DIRECTIONRIGHT 1
 
 using namespace std;
 
@@ -24,8 +15,8 @@ int main(int argc, char** argv)
         "plotfarmer",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        640,
-        480,
+        1280,
+        768,
         0);
     if (gameWindow==NULL)
     {
@@ -116,19 +107,29 @@ void Game::gameMainLoop()
             
 }
 
-void Game::handleKey(SDL_Event e){
+void Game::handleKey(SDL_Event e)
+{
     if(e.type ==SDL_KEYDOWN)
-        {
+    {
         if ( e.key.keysym.sym == SDLK_LEFT)
-            {
+        {
             player->setDirection(DIRECTIONLEFT);
-            }
+        }
         if ( e.key.keysym.sym == SDLK_RIGHT)
-            {
+        {
             player->setDirection(DIRECTIONRIGHT);
-            }
+        }
+        if ( e.key.keysym.sym == SDLK_UP)
+        {
+            player->jump();
         }
     }
+    if(e.type ==SDL_KEYUP)
+    {
+        if ( e.key.keysym.sym == SDLK_LEFT || e.key.keysym.sym == SDLK_RIGHT)
+            player->stop();
+    }
+}
 
 void Game::update(long dt){
     player->update(dt);

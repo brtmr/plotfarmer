@@ -1,13 +1,17 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include<vector>
-#include<SDL2/SDL.h>
-#include<SDL2/SDL_image.h>
-#include"Player.h"
-#include"Tilemanager.h"
-#include"Level.h"
 
+#include"Level.h"
+#include"Game.h"
+#include"Player.h"
+#include"Level.h"
+#include"Tilemanager.h"
+#include"Constants.h"
+#include<SDL2/SDL_image.h>
+#include<SDL2/SDL.h>
+#include<iostream>
+#include<vector>
 
 class Game{
     

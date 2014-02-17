@@ -1,9 +1,4 @@
 #include"Level.h"
-#include<iostream>
-#include<vector>
-#include<fstream>
-
-#define BLOCKSIZE 16
 
 std::vector<std::vector<int>> dummyTiles();
 
@@ -11,29 +6,26 @@ Level::Level()
 {
     
     tiles = dummyTiles();
-    width  = 10;
+    width  = 20;
     height = 10;
-    pixelHeight = height*BLOCKSIZE;
-    pixelWidth  = width*BLOCKSIZE;
-    
+    pixelHeight = height*SCALEDBLOCK;
+    pixelWidth  = width*SCALEDBLOCK;
 }
 
 Level::~Level()
 {
-    
-    tiles = dummyTiles();
-    
 }
 
 
 bool Level::isSolid(int i, int j)
 {
+    if (i>height-1 || j>width-1) return false;
     return tiles[i][j]!=-1;
 }
 
 std::vector<std::vector<int>> dummyTiles()
 {
-    const int width = 10;
+    const int width = 20;
     const int height = 10;
     std::vector<std::vector<int>> rows;
     for (int i=0; i<height; i++)
@@ -43,7 +35,8 @@ std::vector<std::vector<int>> dummyTiles()
             {
                 if ( i<6)  row.push_back(-1);
                 if (i==6) row.push_back(0);
-                if ( i>6)  row.push_back(3);
+                if ( i>6 && i<=8)  row.push_back(2);
+                if ( i>8)  row.push_back(4);
             }
         rows.push_back(row);
     }
