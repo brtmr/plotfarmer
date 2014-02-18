@@ -75,6 +75,7 @@ void Player::update(long dt)
     updateBounding();
     
     handleCollision();
+    handleCollision();
 }
 
 void Player::updateBounding()
@@ -89,59 +90,30 @@ void Player::updateBounding()
 
 void Player::handleCollision()
 {
-    //bottom left
-    handleSingleCollision(bounding.x0, bounding.y1,false);
-    //bottom right
-    handleSingleCollision(bounding.x1, bounding.y1,false);
-    //middle left
-    handleSingleCollision(bounding.x0, bounding.ym, true);
-    //middle right
-    handleSingleCollision(bounding.x1, bounding.ym, true);
-    //top left
-    handleSingleCollision(bounding.x0, bounding.y0,false);
-    //top right
-    handleSingleCollision(bounding.x1, bounding.y0,false);
-
+    std::cout << "########################################" << std::endl;
+    std::vector<std::vector<int>> tiles;
+    for (int i=bounding.y0/BLOCKSIZE; i<=bounding.y1/BLOCKSIZE; i++)
+    {
+        for (int j=bounding.x0/BLOCKSIZE; j<=bounding.x1/BLOCKSIZE; j++)
+        {
+            std::vector<int> tile;
+            tile.push_back(i);
+            tile.push_back(j);
+            tiles.push_back(tile);
+        }
+    }
+    //iterate over all the tiles!
+    for (std::vector<std::vector<int>>::iterator it = tiles.begin(); it != tiles.end(); ++it)
+    {
+        //find a point in this thing!
+        //top left 
+        
+    }
 }
 
-void Player::handleSingleCollision(float px, float py, bool isMiddlePart)
+void Player::handleSingleCollision(float px, float py)
 {   
-    int i,j;
-    float penY = 0;
-    float penX = 0;
-    i = py / BLOCKSIZE;
-    j = px / BLOCKSIZE;
-    if (px==(int)px && (int)px % BLOCKSIZE==0) --j ;
-    bool useY=false;
-    if (level->isSolid( i,j ))
-    {
-    /* determine the narrower axis of penetration */
-        if (speedX==0) useY=true;
-        //moving to the right
-        if (speedX>0) penX = j*BLOCKSIZE -     px;
-        //moving to the left
-        if (speedX<0) penX = (j+1)*BLOCKSIZE - px;
-        //moving down
-        if (speedY>0) penY = i*BLOCKSIZE - py;
-        //moving up
-        if (speedY<0) penY = (i+1)*BLOCKSIZE - py;
-        if (!isMiddlePart && (useY || penY*penY<penX*penX))
-        {
-            pos.y = pos.y + penY + (penY<0?-SMALLOFFSET:SMALLOFFSET);
-            speedY = 0;
-            inJump = false;
-        }
-        else 
-        {
-            std::cout << "position is " << px 
-                    << " in block from " << j*BLOCKSIZE << " to " <<  (j+1)*BLOCKSIZE
-                    << " correcting by " << penX << std::endl;
-            pos.x = pos.x + penX + (penX<0?-SMALLOFFSET:SMALLOFFSET);
-            //speedX = 0; 
-        }
-        updateBounding();
-        useY=false; 
-    }
+
 }
 
 void Player::setDirection(int d)

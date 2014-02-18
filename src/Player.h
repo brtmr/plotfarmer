@@ -33,7 +33,7 @@ class Player{
         //functions:
         bool isColliding();
         void handleCollision();
-        void handleSingleCollision(float px, float py, bool);
+        void handleSingleCollision(float px, float py); //, bool);
         void updateBounding();
         //fields
         SDL_Rect dstRect;
