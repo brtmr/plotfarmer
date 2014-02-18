@@ -61,7 +61,7 @@ void Tilemanager::render()
                 {
                     dstRec.x = j * SCALEDBLOCK;
                     dstRec.y = i * SCALEDBLOCK;
-                    SDL_SetRenderDrawColor(gameRenderer,0x66,0x0,0x0,0xFF);
+                    SDL_SetRenderDrawColor(gameRenderer,0xAA,0x0,0x0,0xFF);
                     SDL_RenderDrawRect(gameRenderer,&dstRec);
                 }
             }

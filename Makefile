@@ -21,6 +21,9 @@ Spritesheet.o: src/Spritesheet.cpp src/Spritesheet.h
 Level.o: src/Level.cpp src/Level.h src/Constants.h
 	$(CC) -c $(CFlags) $(LFlags) src/Level.cpp -o Level.o
 
+Geometry.o: src/Geometry.cpp src/Geometry.h src/Constants.h
+	$(CC) -c $(CFlags) $(LFlags) src/Geometry.cpp -o Geometry.o
+
 clean:
 	clear
 	\rm -f *.o plotfarmer

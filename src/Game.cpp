@@ -15,9 +15,11 @@ int main(int argc, char** argv)
         "plotfarmer",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        1024,
-        600,
-        SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL);
+        SCREEN_WIDTH,
+        SCREEN_HEIGHT,
+        //SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL
+        0
+        );
     if (gameWindow==NULL)
     {
          cout << "SDL Window Initialization error. " << SDL_GetError() << endl;
@@ -70,6 +72,7 @@ Game::Game(SDL_Window* w, SDL_Renderer* r)
     level = Level();
     player = new Player(gameRenderer, &level);
     tilemanager = new Tilemanager(gameRenderer, &level);
+    gameOver = false;
 }
 
 Game::~Game(){
@@ -82,7 +85,6 @@ Game::~Game(){
 void Game::gameMainLoop()
 {
     
-    bool gameOver = false;
     SDL_Event e;
     long lastTick = SDL_GetTicks();
     long thisTick;
@@ -138,10 +140,7 @@ void Game::update(long dt){
 void Game::render(){
     SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 255);
     SDL_RenderClear(gameRenderer);
-    
     tilemanager->render();
     player->render();
-    
-
     SDL_RenderPresent(gameRenderer);
     }

@@ -25,6 +25,7 @@ class Game{
         //methods
         void update(long);
         bool init_SDL;
+        bool gameOver;
         void handleKey(SDL_Event);
         //fields        
         SDL_Window*   gameWindow;       

@@ -9,16 +9,18 @@ Player::Player(SDL_Renderer* renderer, Level* l)
     level        = l;
     gameRenderer = renderer;
     /* load the spritesheet */
-    spritesheet = new Spritesheet("sprites/wiz.png",1,3,3,renderer);
+    spritesheet = new Spritesheet("sprites/wiz_staff_down.png",1,3,3,renderer);
     
     height = spritesheet->singleHeight;
     width  = spritesheet->singleWidth;
     
     /* set initial position*/
-    posX = 5;
-    posY = 40;
+    pos.x = 5;
+    pos.y = 40;
+    prevpos.x = 5;
+    prevpos.y = 40;
     speedY = -0.08;
-    speedX = 0.04;
+    speedX = 0;
     
     direction = DIRECTIONRIGHT;
     
@@ -27,9 +29,8 @@ Player::Player(SDL_Renderer* renderer, Level* l)
     dstRect.w = SCALE*(spritesheet->singleWidth);
     dstRect.h = SCALE*(spritesheet->singleHeight);
 
-    running = true;
+    running = false;
     inJump  = true;
-
 }
 
 Player::~Player()
@@ -39,66 +40,107 @@ Player::~Player()
 
 void Player::update(long dt)
 {
-    posX = posX + speedX*dt;
-    posY = posY + speedY*dt;
+    prevpos.x = pos.x;
+    prevpos.y = pos.y;
+    
+    pos.x = pos.x + speedX*dt;
+    pos.y = pos.y + speedY*dt;
     speedY = speedY + GRAVITY*dt;
     
     /*
      * Dont let the player leave the level.
      */
-    if ( posY+height > (level->unscaledHeight) )
+    if ( pos.y+height > (level->unscaledHeight) )
     {
-        posY = (level->unscaledHeight) - height - SMALLOFFSET;
+        pos.y = (level->unscaledHeight) - height - SMALLOFFSET;
         speedY = 0;
+        inJump=false;
     }
-    if ( posX+width > (level->unscaledWidth) )
+    if ( pos.x+width > (level->unscaledWidth) )
     {
-        posX = (level->unscaledWidth) - width - SMALLOFFSET;
+        pos.x = (level->unscaledWidth) - width - SMALLOFFSET;
         speedX = 0;
     }
-    if ( posY < 0 )
+    if ( pos.y < 0 )
     {
-        posY = SMALLOFFSET;
+        pos.y = SMALLOFFSET;
         speedY = 0;
     }
-    if ( posX < 0 )
+    if ( pos.x < 0 )
     {
-        posX = SMALLOFFSET;
+        pos.x = SMALLOFFSET;
         speedX = 0;
     }
     
-    /*
-    * check for collisions with the level
-    * and handle them
-    */
+    updateBounding();
     
-    if (isColliding())
-    {
-        handleCollision();
-    }
-    
+    handleCollision();
+}
+
+void Player::updateBounding()
+{
+    bounding.x0 = pos.x +         ((direction==DIRECTIONRIGHT)?PXOFFSETL:PXOFFSETR);
+    bounding.x1 = pos.x + width - ((direction==DIRECTIONRIGHT)?PXOFFSETR:PXOFFSETL);
+    bounding.y0 = pos.y;
+    bounding.y1 = pos.y + height;
+    bounding.ym = pos.y + (height/2);
+
 }
 
 void Player::handleCollision()
 {
-    //int topY    = posY / BLOCKSIZE;
-    int bottomY = (posY+height) / BLOCKSIZE;
-    int leftX   = posX / BLOCKSIZE;
-    int rightX  = (posX+width) / BLOCKSIZE;
-    /*falling*/
-    if (speedY>0)
+    //bottom left
+    handleSingleCollision(bounding.x0, bounding.y1,false);
+    //bottom right
+    handleSingleCollision(bounding.x1, bounding.y1,false);
+    //middle left
+    handleSingleCollision(bounding.x0, bounding.ym, true);
+    //middle right
+    handleSingleCollision(bounding.x1, bounding.ym, true);
+    //top left
+    handleSingleCollision(bounding.x0, bounding.y0,false);
+    //top right
+    handleSingleCollision(bounding.x1, bounding.y0,false);
+
+}
+
+void Player::handleSingleCollision(float px, float py, bool isMiddlePart)
+{   
+    int i,j;
+    float penY = 0;
+    float penX = 0;
+    i = py / BLOCKSIZE;
+    j = px / BLOCKSIZE;
+    if (px==(int)px && (int)px % BLOCKSIZE==0) --j ;
+    bool useY=false;
+    if (level->isSolid( i,j ))
     {
-        /* check wether the above block is free. move the player there */
-        if( !level->isSolid(bottomY-1, leftX ) &&
-            !level->isSolid(bottomY-1, rightX) &&
-            !level->isSolid(bottomY-2, leftX ) &&
-            !level->isSolid(bottomY-2, rightX)
-            )
+    /* determine the narrower axis of penetration */
+        if (speedX==0) useY=true;
+        //moving to the right
+        if (speedX>0) penX = j*BLOCKSIZE -     px;
+        //moving to the left
+        if (speedX<0) penX = (j+1)*BLOCKSIZE - px;
+        //moving down
+        if (speedY>0) penY = i*BLOCKSIZE - py;
+        //moving up
+        if (speedY<0) penY = (i+1)*BLOCKSIZE - py;
+        if (!isMiddlePart && (useY || penY*penY<penX*penX))
         {
-            posY = (bottomY)*BLOCKSIZE-height;
+            pos.y = pos.y + penY + (penY<0?-SMALLOFFSET:SMALLOFFSET);
             speedY = 0;
             inJump = false;
         }
+        else 
+        {
+            std::cout << "position is " << px 
+                    << " in block from " << j*BLOCKSIZE << " to " <<  (j+1)*BLOCKSIZE
+                    << " correcting by " << penX << std::endl;
+            pos.x = pos.x + penX + (penX<0?-SMALLOFFSET:SMALLOFFSET);
+            //speedX = 0; 
+        }
+        updateBounding();
+        useY=false; 
     }
 }
 
@@ -133,19 +175,20 @@ void Player::jump()
 
 bool Player::isColliding()
 {
-    bool topleft     = level->isSolid (posY/BLOCKSIZE, posX/BLOCKSIZE);
-    bool topright    = level->isSolid (posY/BLOCKSIZE, (posX+width)/BLOCKSIZE);
-    bool bottomleft  = level->isSolid ((posY+height)/BLOCKSIZE, posX/BLOCKSIZE);
-    bool bottomright = level->isSolid ((posY+height)/BLOCKSIZE, (posX+width)/BLOCKSIZE);
-    
-    if (topleft || topright || bottomleft || bottomright) return true;  
-    return false; 
+    for (int i=bounding.y0/BLOCKSIZE; i<(bounding.y1/BLOCKSIZE)+1; i++)
+    {
+        for (int j=bounding.x0/BLOCKSIZE; j<(bounding.x1/BLOCKSIZE)+1; j++)
+        {
+            if (level->isSolid(i,j)) return true;
+        }
+    }
+    return false;
 }
 
 void Player::render()
 {
-    dstRect.x = SCALE*posX;
-    dstRect.y = SCALE*posY;
+    dstRect.x = SCALE*pos.x;
+    dstRect.y = SCALE*pos.y;
     if (direction == DIRECTIONRIGHT)
     SDL_RenderCopy(
         gameRenderer,

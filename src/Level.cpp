@@ -42,5 +42,17 @@ std::vector<std::vector<int>> dummyTiles()
             }
         rows.push_back(row);
     }
+    rows[6][4]=2;
+    rows[6][5]=2;
+    rows[6][6]=2;
+    rows[6][7]=2;
+    rows[5][4]=0;
+    rows[5][5]=1;
+    rows[5][6]=1;
+    rows[5][7]=0;
+    rows[4][9]=0;
+    rows[4][10]=1;
+    rows[4][11]=1;
+    rows[4][12]=0;
     return rows;
 }
