@@ -1,6 +1,6 @@
 #plotfarmer
  
-A platforming game written in C+++, using SDL2
+A platforming game written in C++, using SDL2
 
 #building
 
