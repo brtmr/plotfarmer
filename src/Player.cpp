@@ -71,47 +71,47 @@ void Player::updateBounding()
     bounding.y0 = pos.y;
     bounding.y1 = pos.y + height;
 }
-
-void Player::handleCollision()
-{
     /**
      * Uses a minimum translation vector approach,
      * simplified to axis-aligned rectangles to deal woth collision
      * http://elancev.name/oliver/2D%20polygon.htm
      */
      
-    std::vector<std::vector<int>> tiles;
-    for (int i=bounding.y0/BLOCKSIZE; i<=bounding.y1/BLOCKSIZE; i++)
-    {
-        for (int j=bounding.x0/BLOCKSIZE; j<=bounding.x1/BLOCKSIZE; j++)
-        {
-            std::vector<int> tile;
-            tile.push_back(i);
-            tile.push_back(j);
-            tiles.push_back(tile);
-        }
-    }
-    
+void Player::handleCollision()
+{
+    int mini = bounding.y0/BLOCKSIZE;
+    int maxi = bounding.y1/BLOCKSIZE;
+    int minj = bounding.x0/BLOCKSIZE;
+    int maxj = bounding.x1/BLOCKSIZE;
     rectangle tile;
     float x,y;
-    for (std::vector<std::vector<int>>::iterator it = tiles.begin(); it != tiles.end(); ++it)
+    for (int i=mini; i<=maxi; i++)
     {
-        int i = it->at(0);
-        int j = it->at(1);
-        if (level->isSolid(i,j))
+        for (int j=minj; j<=maxj; j++)
         {
-            tile.x0 = j*BLOCKSIZE;
-            tile.x1 = (j+1)*BLOCKSIZE;
-            tile.y0 = i*BLOCKSIZE;
-            tile.y1 = (i+1)*BLOCKSIZE;
-            Geometry::getMTV(bounding,tile, &x, &y);
-            pos.x = pos.x + x;
-            pos.y = pos.y + y;
-            updateBounding();
-            if (y<0 && speedY>0) inJump = false;
-            if (y!=0 && speedY>0) speedY = 0;
+            if (level->isSolid(i,j))
+            {
+                tile.x0 = j*BLOCKSIZE;
+                tile.x1 = (j+1)*BLOCKSIZE;
+                tile.y0 = i*BLOCKSIZE;
+                tile.y1 = (i+1)*BLOCKSIZE;
+                Geometry::getMTV(bounding, tile, &x, &y);
+                pos.x = pos.x + x;
+                pos.y = pos.y + y;
+                updateBounding();
+                if (y<0 && speedY>0) inJump = false;
+                if ((y<0) || (y>0 && didIHitMyHead())) speedY = 0;
+            }
         }
     }
+}
+
+bool Player::didIHitMyHead()
+{
+    int i  = (bounding.y0 / BLOCKSIZE)-1;
+    int j0 = ((bounding.x0 + ONEPIXEL) / BLOCKSIZE); //Yay for magic numbers!
+    int j1 = ((bounding.x1 - ONEPIXEL) / BLOCKSIZE);
+    return (level->isSolid(i,j0) || level->isSolid(i,j1));
 }
 
 void Player::setDirection(int d)

@@ -29,8 +29,8 @@ class Player{
         //functions:
         bool isColliding();
         void handleCollision();
-        void handleSingleCollision(float px, float py);
         void updateBounding();
+        bool didIHitMyHead();
         //fields
         SDL_Rect dstRect;
         SDL_Renderer* gameRenderer;

@@ -22,6 +22,7 @@ const int DIRECTIONRIGHT = 1;
 /* player bounding box */
 const int PXOFFSETL = 9;
 const int PXOFFSETR = 6;
+const int ONEPIXEL = 1;
 
 const bool DEBUG = 0;
 #endif
