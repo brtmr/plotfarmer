@@ -1,4 +1,5 @@
 #include"Player.h"
+#include<cstdio>
 
 Player::Player(SDL_Renderer* renderer, Level* l)
 {
@@ -156,8 +157,9 @@ bool Player::isColliding()
 
 void Player::render()
 {
-    dstRect.x = SCALE*pos.x;
-    dstRect.y = SCALE*pos.y;
+    
+    dstRect.x = roundf(SCALE*pos.x);
+    dstRect.y = roundf(SCALE*pos.y);
     if (direction == DIRECTIONRIGHT)
     SDL_RenderCopy(
         gameRenderer,

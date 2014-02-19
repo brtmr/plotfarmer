@@ -13,7 +13,7 @@ const int SCREEN_HEIGHT = 640;
 /* speeds and accelerations */
 const float GRAVITY   = 0.0004;
 const float SPEED     = 0.05;
-const float JUMPSPEED = 0.15;
+const float JUMPSPEED = 0.16;
 
 /* flags */
 const int DIRECTIONLEFT  = 0;
