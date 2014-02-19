@@ -1,7 +1,7 @@
 CC = g++
 CFlags = -Wall -Werror -pedantic-errors -g -ggdb -std=c++11 -O3
 LFlags = -lSDL2 -lSDL2_image 
-OBJS = Player.o Tilemanager.o Spritesheet.o Game.o Level.o
+OBJS = Player.o Tilemanager.o Spritesheet.o Game.o Level.o Geometry.o
 
 plotfarmer: $(OBJS)
 	$(CC) $(LFlags) $(OBJS) -o plotfarmer
@@ -24,6 +24,9 @@ Level.o: src/Level.cpp src/Level.h src/Constants.h
 Geometry.o: src/Geometry.cpp src/Geometry.h src/Constants.h
 	$(CC) -c $(CFlags) $(LFlags) src/Geometry.cpp -o Geometry.o
 
+GeometryTest: src/Geometry.cpp src/Geometry.h src/GeometryTest.cpp Geometry.o
+	$(CC) $(CFlags) src/GeometryTest.cpp Geometry.o -o GeometryTest
+
 clean:
 	clear
-	\rm -f *.o plotfarmer
+	\rm -f *.o plotfarmer GeometryTest

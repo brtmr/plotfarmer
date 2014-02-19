@@ -1,34 +1,23 @@
 #include"Player.h"
-#include"Spritesheet.h"
-#include"Constants.h"
-#include<iostream>
-
 
 Player::Player(SDL_Renderer* renderer, Level* l)
 {
     level        = l;
     gameRenderer = renderer;
-    /* load the spritesheet */
     spritesheet = new Spritesheet("sprites/wiz_staff_down.png",1,3,3,renderer);
-    
     height = spritesheet->singleHeight;
     width  = spritesheet->singleWidth;
-    
-    /* set initial position*/
     pos.x = 5;
     pos.y = 40;
     prevpos.x = 5;
     prevpos.y = 40;
     speedY = -0.08;
     speedX = 0;
-    
     direction = DIRECTIONRIGHT;
-    
     dstRect.x = 0;
     dstRect.y = 0;
     dstRect.w = SCALE*(spritesheet->singleWidth);
     dstRect.h = SCALE*(spritesheet->singleHeight);
-
     running = false;
     inJump  = true;
 }
@@ -42,7 +31,6 @@ void Player::update(long dt)
 {
     prevpos.x = pos.x;
     prevpos.y = pos.y;
-    
     pos.x = pos.x + speedX*dt;
     pos.y = pos.y + speedY*dt;
     speedY = speedY + GRAVITY*dt;
@@ -71,10 +59,7 @@ void Player::update(long dt)
         pos.x = SMALLOFFSET;
         speedX = 0;
     }
-    
     updateBounding();
-    
-    handleCollision();
     handleCollision();
 }
 
@@ -84,13 +69,16 @@ void Player::updateBounding()
     bounding.x1 = pos.x + width - ((direction==DIRECTIONRIGHT)?PXOFFSETR:PXOFFSETL);
     bounding.y0 = pos.y;
     bounding.y1 = pos.y + height;
-    bounding.ym = pos.y + (height/2);
-
 }
 
 void Player::handleCollision()
 {
-    std::cout << "########################################" << std::endl;
+    /**
+     * Uses a minimum translation vector approach,
+     * simplified to axis-aligned rectangles to deal woth collision
+     * http://elancev.name/oliver/2D%20polygon.htm
+     */
+     
     std::vector<std::vector<int>> tiles;
     for (int i=bounding.y0/BLOCKSIZE; i<=bounding.y1/BLOCKSIZE; i++)
     {
@@ -102,18 +90,27 @@ void Player::handleCollision()
             tiles.push_back(tile);
         }
     }
-    //iterate over all the tiles!
+    
+    rectangle tile;
+    float x,y;
     for (std::vector<std::vector<int>>::iterator it = tiles.begin(); it != tiles.end(); ++it)
     {
-        //find a point in this thing!
-        //top left 
-        
+        int i = it->at(0);
+        int j = it->at(1);
+        if (level->isSolid(i,j))
+        {
+            tile.x0 = j*BLOCKSIZE;
+            tile.x1 = (j+1)*BLOCKSIZE;
+            tile.y0 = i*BLOCKSIZE;
+            tile.y1 = (i+1)*BLOCKSIZE;
+            Geometry::getMTV(bounding,tile, &x, &y);
+            pos.x = pos.x + x;
+            pos.y = pos.y + y;
+            updateBounding();
+            if (y<0 && speedY>0) inJump = false;
+            if (y!=0 && speedY>0) speedY = 0;
+        }
     }
-}
-
-void Player::handleSingleCollision(float px, float py)
-{   
-
 }
 
 void Player::setDirection(int d)

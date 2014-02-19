@@ -5,18 +5,14 @@
 #include<SDL2/SDL.h>
 #include<vector>
 #include<iterator>
+#include<iostream>
 #include"Spritesheet.h"
 #include"Level.h"
 #include"Geometry.h"
+#include"Constants.h"
 
-struct bbox
-{
-    float x0;
-    float x1;
-    float y0;
-    float y1;
-    float ym;
-};
+
+
 
 class Player{
     
@@ -33,7 +29,7 @@ class Player{
         //functions:
         bool isColliding();
         void handleCollision();
-        void handleSingleCollision(float px, float py); //, bool);
+        void handleSingleCollision(float px, float py);
         void updateBounding();
         //fields
         SDL_Rect dstRect;
@@ -48,7 +44,7 @@ class Player{
         int height;
         int width;
         short direction;
-        bbox bounding;
+        rectangle bounding;
         bool running;
         bool inJump;
     };
