@@ -67,11 +67,13 @@ int main(int argc, char** argv)
 
 Game::Game(SDL_Window* w, SDL_Renderer* r)
 {
+    camera.x = 0;
+    camera.y = 0;
     gameWindow  =  w;
     gameRenderer = r;     
     level = Level();
-    player = new Player(gameRenderer, &level);
-    tilemanager = new Tilemanager(gameRenderer, &level);
+    player = new Player(gameRenderer, &level, &camera);
+    tilemanager = new Tilemanager(gameRenderer, &level, &camera);
     gameOver = false;
 }
 

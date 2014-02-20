@@ -1,6 +1,7 @@
 #ifndef TILEMANAGER_H
 #define TILEMANAGER_H
 
+#include"Geometry.h"
 #include"Spritesheet.h"
 #include"Level.h"
 #include"Constants.h"
@@ -13,7 +14,7 @@ class Tilemanager{
     
     public:
         
-        Tilemanager(SDL_Renderer* r, Level* l);
+        Tilemanager(SDL_Renderer* r, Level* l, vec2di *c);
         ~Tilemanager();
         void render();
         
@@ -24,7 +25,8 @@ class Tilemanager{
         Spritesheet* spritesheet;
         SDL_Texture* levelTexture;
         void getClipRectangle(int n);
-        Level* level;
+        Level *level;
+        vec2di *camera;
     
     };
     

@@ -33,6 +33,7 @@ class Game{
         Player *player;
         Tilemanager *tilemanager;
         Level level;
+        vec2di camera;
     };
 
 

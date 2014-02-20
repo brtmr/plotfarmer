@@ -17,7 +17,7 @@
 class Player{
     
     public:
-        Player(SDL_Renderer*, Level* l);
+        Player(SDL_Renderer*, Level* l, vec2di *c);
         ~Player();
         void render();
         void update(long);
@@ -31,6 +31,7 @@ class Player{
         void handleCollision();
         void updateBounding();
         bool didIHitMyHead();
+        void setCamera();
         //fields
         SDL_Rect dstRect;
         SDL_Renderer* gameRenderer;
@@ -40,6 +41,7 @@ class Player{
         vec2df vel;
         vec2di pos;
         vec2df remainder;
+        vec2di *camera;
         int height;
         int width;
         short direction;

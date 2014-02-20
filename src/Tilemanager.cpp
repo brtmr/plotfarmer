@@ -1,10 +1,11 @@
 #include"Tilemanager.h"
 
 
-Tilemanager::Tilemanager(SDL_Renderer* r, Level* l)
+Tilemanager::Tilemanager(SDL_Renderer* r, Level* l, vec2di *c)
 {
     gameRenderer = r;
     level        = l;
+    camera       = c;
     /* load the spritesheet */
     spritesheet = new Spritesheet("sprites/16blox.png",1,5,5,gameRenderer);
     redraw = true;
@@ -30,7 +31,7 @@ void Tilemanager::render()
      * make sure to save the old renderTarget. 
      */
     SDL_Rect dstRec;
-    
+        
     if (redraw){
         
         dstRec.w = SCALEDBLOCK;
@@ -73,14 +74,20 @@ void Tilemanager::render()
     * copy the contents of the levelTexture onto the screen
     */
     SDL_SetRenderTarget(gameRenderer, NULL);
-    dstRec.x = 0 ;
-    dstRec.y = 0 ;
-    dstRec.w = (level->pixelWidth);
-    dstRec.h = (level->pixelHeight);
+    
+    SDL_Rect srcRec;
+    srcRec.x = camera->x;
+    srcRec.y = camera->y;
+    srcRec.w = SCREEN_WIDTH;
+    srcRec.h = SCREEN_HEIGHT;
+    dstRec.x = 0;
+    dstRec.y = 0;
+    dstRec.w = SCREEN_WIDTH;
+    dstRec.h = SCREEN_HEIGHT;
     SDL_RenderCopy(
         gameRenderer,
         levelTexture,
-        NULL,
+        &(srcRec),
         &(dstRec)
         );
 }

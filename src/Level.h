@@ -5,14 +5,11 @@
 #include<iostream>
 #include<vector>
 
-
-
 class Level
 {
     public:
         Level();
         ~Level();
-        std::vector<std::vector<int>> tiles;
         bool isSolid(int,int);
         int height;
         int width;
@@ -20,6 +17,7 @@ class Level
         int pixelWidth;
         int unscaledWidth;
         int unscaledHeight;
+        std::vector<std::vector<int>> tiles;
     private:
         
 };

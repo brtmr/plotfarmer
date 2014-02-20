@@ -1,10 +1,11 @@
 #include"Player.h"
 #include<cstdio>
 
-Player::Player(SDL_Renderer* renderer, Level* l)
+Player::Player(SDL_Renderer* renderer, Level* l, vec2di *c)
 {
     level        = l;
     gameRenderer = renderer;
+    camera       = c;
     spritesheet = new Spritesheet("sprites/wiz_staff_down.png",1,3,3,renderer);
     height = spritesheet->singleHeight*SCALE;
     width  = spritesheet->singleWidth*SCALE ;
@@ -40,9 +41,7 @@ void Player::update(long dt)
     float prevvely = vel.y;
     vel.y = vel.y + GRAVITY * dt;
     
-    /*
-     * Dont let the player leave the level.
-     */
+    //Dont let the player leave the level.
     if ( pos.y+height > (level->height*SCALEDBLOCK) )
     {
         pos.y = (level->width*SCALEDBLOCK) - height - SMALLOFFSET;
@@ -66,10 +65,29 @@ void Player::update(long dt)
     }
     updateBounding();
     handleCollision();
-    
+    //check if falling
     if (vel.y > prevvely) ++acc_counter;
     else acc_counter = 0;
     if (acc_counter>=4) inJump = true; //YAY for magic numbers!
+    
+    setCamera();
+}
+
+
+void Player::setCamera()
+{
+    if (pos.x<SCREEN_WIDTH/2) 
+        camera->x = 0;
+    else if(pos.x > (level->pixelWidth)-(SCREEN_WIDTH/2)) 
+        camera->x = (level->pixelWidth)-SCREEN_WIDTH;
+    else 
+        camera->x = pos.x-SCREEN_WIDTH/2;
+    if (pos.y<SCREEN_HEIGHT/2) 
+        camera->y = 0;
+    else if(pos.y > (level->pixelHeight)-(SCREEN_HEIGHT/2)) 
+        camera->y = (level->pixelHeight)-SCREEN_HEIGHT;
+    else 
+        camera->y = pos.y-SCREEN_HEIGHT/2;
 }
 
 void Player::updateBounding()
@@ -171,8 +189,11 @@ bool Player::isColliding()
 
 void Player::render()
 {
-    dstRect.x = (pos.x)+roundf(remainder.x);
-    dstRect.y = (pos.y)+roundf(remainder.y);
+    vec2di renderpos;
+    renderpos.x = (pos.x)+roundf(remainder.x);
+    renderpos.y = (pos.y)+roundf(remainder.y);
+    dstRect.x = renderpos.x-camera->x;
+    dstRect.y = renderpos.y-camera->y;
     if (direction == DIRECTIONRIGHT)
     SDL_RenderCopy(
         gameRenderer,
