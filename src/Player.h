@@ -37,10 +37,9 @@ class Player{
         SDL_Rect* getCurrentRectangle();
         Level* level;
         Spritesheet* spritesheet;
-        float speedY;
-        float speedX;
-        Point pos;
-        Point prevpos;
+        vec2df vel;
+        vec2di pos;
+        vec2df remainder;
         int height;
         int width;
         short direction;

@@ -3,28 +3,28 @@
 
 struct rectangle
 {
-    float x0;
-    float x1;
-    float y0;
-    float y1;
+    int x0;
+    int x1;
+    int y0;
+    int y1;
 };
 
-struct Point
+struct vec2di
+{
+    int x;
+    int y;
+};
+
+struct vec2df
 {
     float x;
     float y;
 };
 
-struct Line
-{
-    Point from;
-    Point to;
-};
-
 class Geometry
 {
     public:
-    static void getMTV(rectangle player, rectangle tile, float *x, float *y);
+    static void getMTV(rectangle player, rectangle tile, int *x, int *y);
 };
 
 #endif

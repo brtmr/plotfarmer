@@ -10,7 +10,7 @@ using namespace std;
 
 /* returns the minimum translation vector for the player to leave the
  * tile */
-void Geometry::getMTV(rectangle player, rectangle tile, float *x, float *y){
+void Geometry::getMTV(rectangle player, rectangle tile, int *x, int *y){
     *x = 0;
     *y = 0;
     //rectangles do _not_ intersect.

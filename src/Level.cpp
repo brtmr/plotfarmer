@@ -21,7 +21,7 @@ Level::~Level()
 
 bool Level::isSolid(int i, int j)
 {
-    if (i>height-1 || j>width-1) return false;
+    if (i>height-1 || j>width-1 || i<0 || j<0) return false;
     return tiles[i][j]!=-1;
 }
 
@@ -42,6 +42,8 @@ std::vector<std::vector<int>> dummyTiles()
             }
         rows.push_back(row);
     }
+    
+    
     rows[6][4]=2;
     rows[6][5]=2;
     rows[6][6]=2;
@@ -66,10 +68,5 @@ std::vector<std::vector<int>> dummyTiles()
     rows[4][0]=3;
     rows[5][0]=3;
     
-    rows[1][4]=3;
-    rows[2][4]=3;
-    rows[3][4]=3;
-    rows[4][4]=3;
-    rows[5][4]=3;
     return rows;
 }

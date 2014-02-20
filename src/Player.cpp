@@ -6,14 +6,14 @@ Player::Player(SDL_Renderer* renderer, Level* l)
     level        = l;
     gameRenderer = renderer;
     spritesheet = new Spritesheet("sprites/wiz_staff_down.png",1,3,3,renderer);
-    height = spritesheet->singleHeight;
-    width  = spritesheet->singleWidth;
+    height = spritesheet->singleHeight*SCALE;
+    width  = spritesheet->singleWidth*SCALE ;
     pos.x = 5;
     pos.y = 40;
-    prevpos.x = 5;
-    prevpos.y = 40;
-    speedY = -0.08;
-    speedX = 0;
+    remainder.x = 0;
+    remainder.y = 0;
+    vel.y = -0.08;
+    vel.x = 0;
     direction = DIRECTIONRIGHT;
     dstRect.x = 0;
     dstRect.y = 0;
@@ -30,35 +30,38 @@ Player::~Player()
 
 void Player::update(long dt)
 {
-    prevpos.x = pos.x;
-    prevpos.y = pos.y;
-    pos.x = pos.x + speedX*dt;
-    pos.y = pos.y + speedY*dt;
-    speedY = speedY + GRAVITY*dt;
+    float diffx,diffy;
+    diffx = vel.x*dt + remainder.x;
+    pos.x = pos.x + roundf(diffx);
+    remainder.x = diffx - roundf(diffx);
+    diffy = vel.y*dt + remainder.y;
+    pos.y = pos.y + roundf(diffy);
+    remainder.y = diffy - roundf(diffy); 
+    vel.y = vel.y + GRAVITY * dt;
     
     /*
      * Dont let the player leave the level.
      */
-    if ( pos.y+height > (level->unscaledHeight) )
+    if ( pos.y+height > (level->height*SCALEDBLOCK) )
     {
-        pos.y = (level->unscaledHeight) - height - SMALLOFFSET;
-        speedY = 0;
+        pos.y = (level->width*SCALEDBLOCK) - height - SMALLOFFSET;
+        vel.y = 0;
         inJump=false;
     }
-    if ( pos.x+width > (level->unscaledWidth) )
+    if ( pos.x+width > (level->width*SCALEDBLOCK) )
     {
-        pos.x = (level->unscaledWidth) - width - SMALLOFFSET;
-        speedX = 0;
+        pos.x = (level->width*SCALEDBLOCK) - width - SMALLOFFSET;
+        vel.x = 0;
     }
     if ( pos.y < 0 )
     {
-        pos.y = SMALLOFFSET;
-        speedY = 0;
+        //pos.y = SMALLOFFSET;
+        //vel.y = 0;
     }
     if ( pos.x < 0 )
     {
         pos.x = SMALLOFFSET;
-        speedX = 0;
+        vel.x = 0;
     }
     updateBounding();
     handleCollision();
@@ -79,38 +82,44 @@ void Player::updateBounding()
      
 void Player::handleCollision()
 {
-    int mini = bounding.y0/BLOCKSIZE;
-    int maxi = bounding.y1/BLOCKSIZE;
-    int minj = bounding.x0/BLOCKSIZE;
-    int maxj = bounding.x1/BLOCKSIZE;
+    bool iMightHaveHitMyHead = false;
+    int mini = bounding.y0/SCALEDBLOCK;
+    int maxi = bounding.y1/SCALEDBLOCK;
+    int minj = bounding.x0/SCALEDBLOCK;
+    int maxj = bounding.x1/SCALEDBLOCK;
     rectangle tile;
-    float x,y;
+    int x,y;
     for (int i=mini; i<=maxi; i++)
     {
         for (int j=minj; j<=maxj; j++)
         {
             if (level->isSolid(i,j))
             {
-                tile.x0 = j*BLOCKSIZE;
-                tile.x1 = (j+1)*BLOCKSIZE;
-                tile.y0 = i*BLOCKSIZE;
-                tile.y1 = (i+1)*BLOCKSIZE;
+                tile.x0 = j*SCALEDBLOCK;
+                tile.x1 = (j+1)*SCALEDBLOCK;
+                tile.y0 = i*SCALEDBLOCK;
+                tile.y1 = (i+1)*SCALEDBLOCK;
                 Geometry::getMTV(bounding, tile, &x, &y);
                 pos.x = pos.x + x;
                 pos.y = pos.y + y;
                 updateBounding();
-                if (y<0 && speedY>0) inJump = false;
-                if ((y<0) || (y>0 && didIHitMyHead())) speedY = 0;
+                if (y<0 && vel.y>0) inJump = false;
+                if (y<0) vel.y = 0;
+                if (y>0) iMightHaveHitMyHead = true;
             }
         }
+    }
+    if (iMightHaveHitMyHead && didIHitMyHead())
+    {
+        vel.y = 0;
     }
 }
 
 bool Player::didIHitMyHead()
 {
-    int i  = (bounding.y0 / BLOCKSIZE)-1;
-    int j0 = ((bounding.x0 + ONEPIXEL) / BLOCKSIZE); //Yay for magic numbers!
-    int j1 = ((bounding.x1 - ONEPIXEL) / BLOCKSIZE);
+    int i  = (bounding.y0 / SCALEDBLOCK)-1;
+    int j0 = ((bounding.x0) / SCALEDBLOCK);
+    int j1 = ((bounding.x1) / SCALEDBLOCK);
     return (level->isSolid(i,j0) || level->isSolid(i,j1));
 }
 
@@ -120,18 +129,18 @@ void Player::setDirection(int d)
     if (d == DIRECTIONLEFT)
         {
         direction = DIRECTIONLEFT;
-        speedX = -SPEED;
+        vel.x = -SPEED;
         }
     if (d == DIRECTIONRIGHT)
         {
         direction = DIRECTIONRIGHT;
-        speedX = SPEED;
+        vel.x = SPEED;
         }
 }
 
 void Player::stop()
 {
-    speedX = 0;
+    vel.x = 0;
     running = false;
 }
     
@@ -139,15 +148,15 @@ void Player::jump()
 {
     //cant jump while jumping
     if (inJump) return;
-    speedY = -JUMPSPEED;
+    vel.y = -JUMPSPEED;
     inJump = true;
 }
 
 bool Player::isColliding()
 {
-    for (int i=bounding.y0/BLOCKSIZE; i<(bounding.y1/BLOCKSIZE)+1; i++)
+    for (int i=bounding.y0/SCALEDBLOCK; i<(bounding.y1/SCALEDBLOCK)+1; i++)
     {
-        for (int j=bounding.x0/BLOCKSIZE; j<(bounding.x1/BLOCKSIZE)+1; j++)
+        for (int j=bounding.x0/SCALEDBLOCK; j<(bounding.x1/SCALEDBLOCK)+1; j++)
         {
             if (level->isSolid(i,j)) return true;
         }
@@ -157,9 +166,8 @@ bool Player::isColliding()
 
 void Player::render()
 {
-    
-    dstRect.x = roundf(SCALE*pos.x);
-    dstRect.y = roundf(SCALE*pos.y);
+    dstRect.x = (pos.x)+roundf(remainder.x);
+    dstRect.y = (pos.y)+roundf(remainder.y);
     if (direction == DIRECTIONRIGHT)
     SDL_RenderCopy(
         gameRenderer,
