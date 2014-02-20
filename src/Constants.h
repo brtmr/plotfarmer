@@ -2,8 +2,8 @@
 #define CONSTANTS_H
 
 /* sizes & scales */
+const int SCALE = 0xF;
 const int BLOCKSIZE = 16;
-const int SCALE = 7;
 const int SMALLOFFSET = 0;
 const int SCALEDBLOCK = BLOCKSIZE * SCALE;
 const int SCREEN_WIDTH  = 1024;
