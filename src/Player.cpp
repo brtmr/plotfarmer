@@ -37,6 +37,7 @@ void Player::update(long dt)
     diffy = vel.y*dt + remainder.y;
     pos.y = pos.y + roundf(diffy);
     remainder.y = diffy - roundf(diffy); 
+    float prevvely = vel.y;
     vel.y = vel.y + GRAVITY * dt;
     
     /*
@@ -65,6 +66,10 @@ void Player::update(long dt)
     }
     updateBounding();
     handleCollision();
+    
+    if (vel.y > prevvely) ++acc_counter;
+    else acc_counter = 0;
+    if (acc_counter>=4) inJump = true; //YAY for magic numbers!
 }
 
 void Player::updateBounding()

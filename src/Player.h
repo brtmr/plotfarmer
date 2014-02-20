@@ -46,6 +46,7 @@ class Player{
         rectangle bounding;
         bool running;
         bool inJump;
+        int acc_counter;
     };
 
 #endif
