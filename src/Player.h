@@ -11,9 +11,6 @@
 #include"Geometry.h"
 #include"Constants.h"
 
-
-
-
 class Player{
     
     public:
@@ -24,18 +21,19 @@ class Player{
         void setDirection(int d);
         void stop();
         void jump();
-            
+        vec2di getTile();
     private:
         //functions:
-        bool isColliding();
         void handleCollision();
         void updateBounding();
         bool didIHitMyHead();
         void setCamera();
+        void stayInLevel();
+        void checkIfFalling(float);
+        SDL_Rect* getCurrentRectangle();
         //fields
         SDL_Rect dstRect;
         SDL_Renderer* gameRenderer;
-        SDL_Rect* getCurrentRectangle();
         Level* level;
         Spritesheet* spritesheet;
         vec2df vel;

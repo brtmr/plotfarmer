@@ -22,6 +22,7 @@ Player::Player(SDL_Renderer* renderer, Level* l, vec2di *c)
     dstRect.h = SCALE*(spritesheet->singleHeight);
     running = false;
     inJump  = true;
+    
 }
 
 Player::~Player()
@@ -41,7 +42,15 @@ void Player::update(long dt)
     float prevvely = vel.y;
     vel.y = vel.y + GRAVITY * dt;
     
-    //Dont let the player leave the level.
+    stayInLevel();
+    updateBounding();
+    handleCollision();
+    checkIfFalling(prevvely);
+    setCamera();
+}
+
+void Player::stayInLevel()
+{
     if ( pos.y+height > (level->height*SCALEDBLOCK) )
     {
         pos.y = (level->width*SCALEDBLOCK) - height - SMALLOFFSET;
@@ -55,24 +64,22 @@ void Player::update(long dt)
     }
     if ( pos.y < 0 )
     {
-        //pos.y = SMALLOFFSET;
-        //vel.y = 0;
+        pos.y = SMALLOFFSET;
+        vel.y = 0;
     }
     if ( pos.x < 0 )
     {
         pos.x = SMALLOFFSET;
         vel.x = 0;
     }
-    updateBounding();
-    handleCollision();
-    //check if falling
-    if (vel.y > prevvely) ++acc_counter;
-    else acc_counter = 0;
-    if (acc_counter>=4) inJump = true; //YAY for magic numbers!
-    
-    setCamera();
 }
 
+void Player::checkIfFalling(float prevvely)
+{
+    if (vel.y > prevvely) ++acc_counter;
+    else acc_counter = 0;
+    if (acc_counter>=FALLCOUNTER) inJump = true;
+}
 
 void Player::setCamera()
 {
@@ -169,22 +176,17 @@ void Player::stop()
     
 void Player::jump()
 {
-    //cant jump while jumping
     if (inJump) return;
     vel.y = -JUMPSPEED;
     inJump = true;
 }
 
-bool Player::isColliding()
+vec2di Player::getTile()
 {
-    for (int i=bounding.y0/SCALEDBLOCK; i<(bounding.y1/SCALEDBLOCK)+1; i++)
-    {
-        for (int j=bounding.x0/SCALEDBLOCK; j<(bounding.x1/SCALEDBLOCK)+1; j++)
-        {
-            if (level->isSolid(i,j)) return true;
-        }
-    }
-    return false;
+    vec2di result;
+    result.x = pos.y / SCALEDBLOCK;
+    result.y = pos.x / SCALEDBLOCK;
+    return result;
 }
 
 void Player::render()

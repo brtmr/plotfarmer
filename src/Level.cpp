@@ -3,8 +3,8 @@
 std::vector<std::vector<int>> dummyTiles();
 std::vector<std::vector<int>> putplatform(std::vector<std::vector<int>>, int i, int j);
 
-#define DUMMYW 30
-#define DUMMYH 30
+#define DUMMYW 300
+#define DUMMYH 50
 
 Level::Level()
 {
@@ -39,7 +39,7 @@ std::vector<std::vector<int>> dummyTiles()
         for (int j=0; j<width; j++)
             {
                 if ( i<12)  row.push_back(-1);
-                if (i==12) row.push_back(0);
+                if (i==12) row.push_back(j%2==0?0:1);
                 if ( i>12 && i<=16)  row.push_back(2);
                 if ( i>16)  row.push_back(4);
             }
@@ -51,7 +51,9 @@ std::vector<std::vector<int>> dummyTiles()
     rows = putplatform(rows,8,6);
     rows = putplatform(rows,10,9);
 
-    
+    rows = putplatform(rows,8,12);
+    rows = putplatform(rows,6,15);
+    rows = putplatform(rows,4,18);
     return rows;
 }
 

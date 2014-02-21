@@ -71,10 +71,10 @@ Game::Game(SDL_Window* w, SDL_Renderer* r)
     camera.y = 0;
     gameWindow  =  w;
     gameRenderer = r;     
-    level = Level();
-    player = new Player(gameRenderer, &level, &camera);
-    tilemanager = new Tilemanager(gameRenderer, &level, &camera);
-    gameOver = false;
+    level       = new Level();
+    player      = new Player(gameRenderer, level, &camera);
+    tilemanager = new Tilemanager(gameRenderer, level, &camera);
+    gameOver    = false;
 }
 
 Game::~Game(){

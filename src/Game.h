@@ -32,7 +32,7 @@ class Game{
         SDL_Renderer* gameRenderer;       
         Player *player;
         Tilemanager *tilemanager;
-        Level level;
+        Level *level;
         vec2di camera;
     };
 
