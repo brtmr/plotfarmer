@@ -23,7 +23,7 @@ class Game{
 
     private:
         //methods
-        void update(long);
+        void update();
         bool init_SDL;
         bool gameOver;
         void handleKey(SDL_Event);

@@ -86,29 +86,22 @@ Game::~Game(){
 
 void Game::gameMainLoop()
 {
-    
-    SDL_Event e;
-    long lastTick = SDL_GetTicks();
-    long thisTick;
-    while (!gameOver)
-    {
-        thisTick = SDL_GetTicks();
-        while(SDL_PollEvent(&e)!=0)
-        {
-            if(e.type == SDL_QUIT)
-            {
-            gameOver = true;
-            }
-            if(e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
-            {
-                handleKey(e);
-            }
+    long next_game_tick = SDL_GetTicks();
+    int loops;
+//    float interpolation;
+    while( !gameOver ) {
+        loops = 0;
+        while( SDL_GetTicks() > next_game_tick && loops < MAX_FRAMESKIP) {
+            update();
+            next_game_tick += SKIP_TICKS;
+            loops++;
         }
-        update(thisTick-lastTick);
+
+//        interpolation = float( SDL_GetTicks() + SKIP_TICKS - next_game_tick )
+//                        / float( SKIP_TICKS );
+        
         render();
-        lastTick = thisTick;
     }
-            
 }
 
 void Game::handleKey(SDL_Event e)
@@ -135,9 +128,22 @@ void Game::handleKey(SDL_Event e)
     }
 }
 
-void Game::update(long dt){
-    player->update(dt);
+void Game::update()
+{
+    SDL_Event e;
+    while(SDL_PollEvent(&e)!=0)
+    {
+        if(e.type == SDL_QUIT)
+        {
+            gameOver = true;
+        }
+            if(e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
+        {
+            handleKey(e);
+        }
     }
+    player->update();
+}
 
 void Game::render(){
     SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 255);

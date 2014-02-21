@@ -30,17 +30,17 @@ Player::~Player()
     delete spritesheet;
 }
 
-void Player::update(long dt)
+void Player::update()
 {
     float diffx,diffy;
-    diffx = vel.x*dt + remainder.x;
+    diffx = vel.x + remainder.x;
     pos.x = pos.x + roundf(diffx);
     remainder.x = diffx - roundf(diffx);
-    diffy = vel.y*dt + remainder.y;
+    diffy = vel.y + remainder.y;
     pos.y = pos.y + roundf(diffy);
     remainder.y = diffy - roundf(diffy); 
     float prevvely = vel.y;
-    vel.y = vel.y + GRAVITY * dt;
+    vel.y = vel.y + GRAVITY;
     
     stayInLevel();
     updateBounding();

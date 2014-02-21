@@ -17,7 +17,7 @@ class Player{
         Player(SDL_Renderer*, Level* l, vec2di *c);
         ~Player();
         void render();
-        void update(long);
+        void update();
         void setDirection(int d);
         void stop();
         void jump();
