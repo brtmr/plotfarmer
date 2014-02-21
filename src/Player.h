@@ -21,7 +21,10 @@ class Player{
         void setDirection(int d);
         void stop();
         void jump();
+        void update_interp(int);
         vec2di getTile();
+        
+
     private:
         //functions:
         void handleCollision();
@@ -36,9 +39,11 @@ class Player{
         SDL_Renderer* gameRenderer;
         Level* level;
         Spritesheet* spritesheet;
-        vec2df vel;
+        vec2df vel;        
         vec2di pos;
+        vec2di interppos;
         vec2df remainder;
+        vec2df interpremainder;
         vec2di *camera;
         int height;
         int width;
@@ -46,6 +51,7 @@ class Player{
         rectangle bounding;
         bool running;
         bool inJump;
+        bool interpX;
         int acc_counter;
     };
 

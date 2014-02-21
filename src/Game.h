@@ -19,7 +19,7 @@ class Game{
         Game(SDL_Window*, SDL_Renderer*);
         ~Game();
         void gameMainLoop();
-        void render();
+        void render(float);
 
     private:
         //methods

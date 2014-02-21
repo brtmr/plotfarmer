@@ -22,7 +22,7 @@ Player::Player(SDL_Renderer* renderer, Level* l, vec2di *c)
     dstRect.h = SCALE*(spritesheet->singleHeight);
     running = false;
     inJump  = true;
-    
+    interpX = true;
 }
 
 Player::~Player()
@@ -32,6 +32,11 @@ Player::~Player()
 
 void Player::update()
 {
+    //update velocity
+    vel.y = vel.y + GRAVITY;
+    if ( vel.y < -SPEEDLIMIT ) vel.y = -SPEEDLIMIT;
+    if ( vel.y >  SPEEDLIMIT ) vel.y =  SPEEDLIMIT;
+    //update positions
     float diffx,diffy;
     diffx = vel.x + remainder.x;
     pos.x = pos.x + roundf(diffx);
@@ -40,14 +45,12 @@ void Player::update()
     pos.y = pos.y + roundf(diffy);
     remainder.y = diffy - roundf(diffy); 
     float prevvely = vel.y;
-    vel.y = vel.y + GRAVITY;
     
     stayInLevel();
     updateBounding();
     handleCollision();
     handleCollision();
     checkIfFalling(prevvely);
-    setCamera();
 }
 
 void Player::stayInLevel()
@@ -84,18 +87,18 @@ void Player::checkIfFalling(float prevvely)
 
 void Player::setCamera()
 {
-    if (pos.x<SCREEN_WIDTH/2) 
+    if (interppos.x<SCREEN_WIDTH/2) 
         camera->x = 0;
-    else if(pos.x > (level->pixelWidth)-(SCREEN_WIDTH/2)) 
+    else if(interppos.x > (level->pixelWidth)-(SCREEN_WIDTH/2)) 
         camera->x = (level->pixelWidth)-SCREEN_WIDTH;
     else 
-        camera->x = pos.x-SCREEN_WIDTH/2;
-    if (pos.y<SCREEN_HEIGHT/2) 
+        camera->x = interppos.x-SCREEN_WIDTH/2;
+    if (interppos.y<SCREEN_HEIGHT/2) 
         camera->y = 0;
-    else if(pos.y > (level->pixelHeight)-(SCREEN_HEIGHT/2)) 
+    else if(interppos.y > (level->pixelHeight)-(SCREEN_HEIGHT/2)) 
         camera->y = (level->pixelHeight)-SCREEN_HEIGHT;
     else 
-        camera->y = pos.y-SCREEN_HEIGHT/2;
+        camera->y = interppos.y-SCREEN_HEIGHT/2;
 }
 
 void Player::updateBounding()
@@ -113,6 +116,7 @@ void Player::updateBounding()
      
 void Player::handleCollision()
 {
+    interpX = true;
     bool iMightHaveHitMyHead = false;
     int mini = bounding.y0/SCALEDBLOCK;
     int maxi = bounding.y1/SCALEDBLOCK;
@@ -137,6 +141,7 @@ void Player::handleCollision()
                 if (y<0 && vel.y>0) inJump = false;
                 if (y<0) vel.y = 0;
                 if (y>0) iMightHaveHitMyHead = true;
+                if (x!=0) interpX = false;
             }
         }
     }
@@ -193,8 +198,8 @@ vec2di Player::getTile()
 void Player::render()
 {
     vec2di renderpos;
-    renderpos.x = (pos.x)+roundf(remainder.x);
-    renderpos.y = (pos.y)+roundf(remainder.y);
+    renderpos.x = (interppos.x)+roundf(interpremainder.x);
+    renderpos.y = (interppos.y)+roundf(interpremainder.y);
     dstRect.x = renderpos.x-camera->x;
     dstRect.y = renderpos.y-camera->y;
     if (direction == DIRECTIONRIGHT)
@@ -229,4 +234,24 @@ SDL_Rect* Player::getCurrentRectangle()
     if (which % 4 == 2) i = 2;
     if (which % 4 == 3) i = 1;    
     return &(spritesheet->clipRectangles.at(i));
+}
+
+/* just updates the interpolated values. does _not_ change game state */
+void Player::update_interp(int interpolation)
+{
+    if (interpX)
+    {
+        float diffX = vel.x * interpolation + remainder.x;
+        interppos.x = pos.x + roundf(diffX);
+        interpremainder.x = diffX - roundf(diffX);
+    }
+    else
+    {
+        interppos.x = pos.x;
+        interpremainder.x = remainder.x;
+    }
+    float diffY = vel.y * interpolation + remainder.y;
+    interppos.y = pos.y + roundf(diffY);
+    interpremainder.y = diffY - roundf(diffY);
+    setCamera();
 }

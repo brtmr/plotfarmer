@@ -11,9 +11,10 @@ const int SCREEN_HEIGHT = 1152;
 
 /* speeds and accelerations */
 const float GRAVITY   = 0.6 * SCALE;
-const float SPEED     = 1 * SCALE;
-const float JUMPSPEED = 2 * SCALE;
+const float SPEED     = 4 * SCALE;
+const float JUMPSPEED = 7 * SCALE;
 const int FALLCOUNTER = 4;
+const float SPEEDLIMIT = SCALEDBLOCK / 2.1; 
 
 /* flags */
 const int DIRECTIONLEFT  = 0;
@@ -28,10 +29,10 @@ const int CHUNKBORDER = 5;
 const int REDRAWLIMIT = 1; 
 
 /* display the grid + some info for debugging */ 
-const bool DEBUG = true;
+const bool DEBUG = 0;
 
 /* DeWitters Game Loop */ 
-const int TICKS_PER_SECOND = 25;
+const int TICKS_PER_SECOND = 40;
 const int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
 const int MAX_FRAMESKIP = 5;
 #endif

@@ -88,7 +88,7 @@ void Game::gameMainLoop()
 {
     long next_game_tick = SDL_GetTicks();
     int loops;
-//    float interpolation;
+    float interpolation;
     while( !gameOver ) {
         loops = 0;
         while( SDL_GetTicks() > next_game_tick && loops < MAX_FRAMESKIP) {
@@ -97,10 +97,10 @@ void Game::gameMainLoop()
             loops++;
         }
 
-//        interpolation = float( SDL_GetTicks() + SKIP_TICKS - next_game_tick )
-//                        / float( SKIP_TICKS );
+    interpolation = float( SDL_GetTicks() + SKIP_TICKS - next_game_tick )
+                            / float( SKIP_TICKS );
         
-        render();
+    render(interpolation);
     }
 }
 
@@ -145,7 +145,9 @@ void Game::update()
     player->update();
 }
 
-void Game::render(){
+void Game::render(float interpolation){
+    player->update_interp(interpolation);
+    
     SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 255);
     SDL_RenderClear(gameRenderer);
     tilemanager->render();
