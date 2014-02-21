@@ -22,22 +22,16 @@ class Tilemanager{
     private:
         //functions
         void getClipRectangle(int n);
-        vec2di calculateNewOrigin();
-        void drawNewChunk();
+        
         void drawSky();
         //fields
         bool redraw;
         SDL_Renderer* gameRenderer;
         Spritesheet* spritesheet;
-        SDL_Texture* levelTexture;
         SDL_Texture* skyTexture;
         Level *level;
         vec2di *camera;
-        Player *player;
         /* for splitting the level into chunks to be drawn*/
-        int chunkWidth;
-        int chunkHeight;
-        vec2di chunkOrigin;
 
     };
     

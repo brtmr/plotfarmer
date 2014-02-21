@@ -6,8 +6,8 @@ const int SCALE = 4;
 const int BLOCKSIZE = 16;
 const int SMALLOFFSET = 0;
 const int SCALEDBLOCK = BLOCKSIZE * SCALE;
-const int SCREEN_WIDTH  = 1024;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH  = 2048;
+const int SCREEN_HEIGHT = 1152;
 
 /* speeds and accelerations */
 const float GRAVITY   = 0.0006 * SCALE;
@@ -28,5 +28,5 @@ const int CHUNKBORDER = 5;
 const int REDRAWLIMIT = 1; 
 
 /* display the grid + some info for debugging */ 
-const bool DEBUG = false;
+const bool DEBUG = true;
 #endif

@@ -17,8 +17,8 @@ int main(int argc, char** argv)
         SDL_WINDOWPOS_UNDEFINED,
         SCREEN_WIDTH,
         SCREEN_HEIGHT,
-        //SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL
-        0
+        SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL
+        //0
         );
     if (gameWindow==NULL)
     {

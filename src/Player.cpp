@@ -45,6 +45,7 @@ void Player::update(long dt)
     stayInLevel();
     updateBounding();
     handleCollision();
+    handleCollision();
     checkIfFalling(prevvely);
     setCamera();
 }
