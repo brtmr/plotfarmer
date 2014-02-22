@@ -35,25 +35,27 @@ class Player{
         void checkIfFalling(float);
         SDL_Rect* getCurrentRectangle();
         //fields
-        SDL_Rect dstRect;
+        /* SDL stuff */ 
         SDL_Renderer *gameRenderer;
+        /* references to game objects & structs */
         Spritesheet spritesheet;
         Level &level;
+        vec2di &camera;
+        /* velocity & position informatien */
         vec2df vel;        
         vec2di pos;
         vec2di interppos;
         vec2df remainder;
         vec2df interpremainder;
-        vec2di &camera;
         int height;
         int width;
         short direction;
-        rectangle bounding;
         bool running;
         bool inJump;
         bool interpX;
         int acc_counter;
-        const char* path = "sprites/wiz_staff_down.png";
+        rectangle bounding;
+        SDL_Rect dstRect;
     };
 
 #endif

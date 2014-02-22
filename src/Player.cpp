@@ -2,27 +2,24 @@
 #include<cstdio>
 
 Player::Player(SDL_Renderer* renderer, Level &l, vec2di &c) : 
+    gameRenderer(renderer),
     spritesheet("sprites/wiz_staff_down.png",1,3,3,renderer),
-    level(l), camera(c)
-{
-    gameRenderer = renderer;
-    height = spritesheet.singleHeight*SCALE;
-    width  = spritesheet.singleWidth*SCALE ;
-    pos.x = 5;
-    pos.y = 40;
-    remainder.x = 0;
-    remainder.y = 0;
-    vel.y = -0.08;
-    vel.x = 0;
-    direction = DIRECTIONRIGHT;
-    dstRect.x = 0;
-    dstRect.y = 0;
-    dstRect.w = SCALE*(spritesheet.singleWidth);
-    dstRect.h = SCALE*(spritesheet.singleHeight);
-    running = false;
-    inJump  = true;
-    interpX = true;
-}
+    level(l), 
+    camera(c),
+    vel({0,0}),
+    pos({5,40}),
+    interppos({5,40}),
+    remainder({0,0}),
+    interpremainder({0,0}),
+    height(spritesheet.singleHeight*SCALE),
+    width(spritesheet.singleWidth*SCALE),
+    direction(DIRECTIONRIGHT),
+    running(false),
+    inJump(true),
+    interpX(true),
+    acc_counter(0),
+    dstRect({0,0,width,height})
+{}
 
 Player::~Player()
 {
