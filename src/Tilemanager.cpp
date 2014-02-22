@@ -2,13 +2,12 @@
 
 
 Tilemanager::Tilemanager(SDL_Renderer* r, Level &l, vec2di &c):
+    redraw(true),
+    gameRenderer(r),
     spritesheet("sprites/16blox.png",1,5,5,r),
     level(l),
     camera(c)
 {
-    gameRenderer = r;
-    redraw = true;
-    
     skyTexture = SDL_CreateTexture(
         gameRenderer,
         SDL_PIXELFORMAT_RGBA8888,  

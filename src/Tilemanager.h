@@ -18,12 +18,11 @@ class Tilemanager{
         Tilemanager(SDL_Renderer* r, Level &l, vec2di &c);
         ~Tilemanager();
         void render();
+        void drawSky();
         
     private:
         //functions
         void getClipRectangle(int n);
-        
-        void drawSky();
         //fields
         bool redraw;
         SDL_Renderer* gameRenderer;
