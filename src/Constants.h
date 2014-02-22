@@ -16,6 +16,8 @@ const float JUMPSPEED = 7 * SCALE;
 const int FALLCOUNTER = 4;
 const float SPEEDLIMIT = SCALEDBLOCK / 2.1; 
 
+const int BULLETSPEED = SPEEDLIMIT;
+
 /* flags */
 const int DIRECTIONLEFT  = 0;
 const int DIRECTIONRIGHT = 1;

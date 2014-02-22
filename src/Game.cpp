@@ -70,7 +70,7 @@ Game::Game(SDL_Window* w, SDL_Renderer* r) :
     gameWindow(w),
     gameRenderer(r),
     level(),
-    player(r, level, camera),
+    player(r, level, camera, 1, 1),
     tilemanager(r, level, camera),
     camera({0,0})
 {
@@ -117,6 +117,15 @@ void Game::handleKey(SDL_Event e)
         {
             player.jump();
         }
+        if ( e.key.keysym.sym == SDLK_SPACE)
+        {
+            vec2di pos = player.getStaffPosition();
+            MagicBullet *bullet = new MagicBullet
+                (pos.x, pos.y, 
+                gameRenderer, camera, player.getDirection());
+            
+            gameObjects.push_back(bullet);
+        }
     }
     if(e.type ==SDL_KEYUP)
     {
@@ -139,7 +148,13 @@ void Game::update()
             handleKey(e);
         }
     }
+    
     player.update();
+    //update all other game Objects
+    for(std::vector<MovingObject*>::iterator it = gameObjects.begin(); it != gameObjects.end(); ++it) 
+    {
+        (*it)->update();
+    }
 }
 
 void Game::render(float interpolation){
@@ -149,5 +164,13 @@ void Game::render(float interpolation){
     SDL_RenderClear(gameRenderer);
     tilemanager.render();
     player.render();
+    
+    //render all other game Objects
+    for(std::vector<MovingObject*>::iterator it = gameObjects.begin(); it != gameObjects.end(); ++it) 
+    {
+        (*it)->update_interp(interpolation);
+        (*it)->render();
+    }   
+    
     SDL_RenderPresent(gameRenderer);
     }

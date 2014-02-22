@@ -1,22 +1,16 @@
 #include"Player.h"
 #include<cstdio>
 
-Player::Player(SDL_Renderer* renderer, Level &l, vec2di &c) : 
-    gameRenderer(renderer),
+
+Player::Player(SDL_Renderer *renderer, Level &l, vec2di &c, int x, int y):
+    super(x*SCALEDBLOCK,y*SCALEDBLOCK, renderer, c, true),
     spritesheet("sprites/wiz_staff_down.png",1,3,3,renderer),
     level(l), 
-    camera(c),
-    vel({0,0}),
-    pos({5,40}),
-    interppos({5,40}),
-    remainder({0,0}),
-    interpremainder({0,0}),
     height(spritesheet.singleHeight*SCALE),
     width(spritesheet.singleWidth*SCALE),
     direction(DIRECTIONRIGHT),
     running(false),
     inJump(true),
-    interpX(true),
     acc_counter(0),
     dstRect({0,0,width,height})
 {}
@@ -27,19 +21,9 @@ Player::~Player()
 
 void Player::update()
 {
-    //update velocity
-    vel.y = vel.y + GRAVITY;
-    if ( vel.y < -SPEEDLIMIT ) vel.y = -SPEEDLIMIT;
-    if ( vel.y >  SPEEDLIMIT ) vel.y =  SPEEDLIMIT;
-    //update positions
-    float diffx,diffy;
-    diffx = vel.x + remainder.x;
-    pos.x = pos.x + roundf(diffx);
-    remainder.x = diffx - roundf(diffx);
-    diffy = vel.y + remainder.y;
-    pos.y = pos.y + roundf(diffy);
-    remainder.y = diffy - roundf(diffy); 
     float prevvely = vel.y;
+    
+    super::update();
     
     stayInLevel();
     updateBounding();
@@ -234,19 +218,19 @@ SDL_Rect* Player::getCurrentRectangle()
 /* just updates the interpolated values. does _not_ change game state */
 void Player::update_interp(int interpolation)
 {
-    if (interpX)
-    {
-        float diffX = vel.x * interpolation + remainder.x;
-        interppos.x = pos.x + roundf(diffX);
-        interpremainder.x = diffX - roundf(diffX);
-    }
-    else
-    {
-        interppos.x = pos.x;
-        interpremainder.x = remainder.x;
-    }
-    float diffY = vel.y * interpolation + remainder.y;
-    interppos.y = pos.y + roundf(diffY);
-    interpremainder.y = diffY - roundf(diffY);
+    super::update_interp(interpolation);
     setCamera();
+}
+
+vec2di Player::getStaffPosition()
+{
+if (direction == DIRECTIONRIGHT)
+    return {pos.x + 12*SCALE, pos.y + 17*SCALE};
+else
+    return {pos.x + 3*SCALE, pos.y + 17*SCALE};
+}
+
+short Player::getDirection()
+{
+    return direction;
 }

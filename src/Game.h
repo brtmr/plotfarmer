@@ -5,6 +5,7 @@
 #include"Level.h"
 #include"Game.h"
 #include"Player.h"
+#include"MagicBullet.h"
 #include"Level.h"
 #include"Tilemanager.h"
 #include"Constants.h"
@@ -34,6 +35,7 @@ class Game{
         Player      player;
         Tilemanager tilemanager;
         vec2di      camera;
+        std::vector<MovingObject *> gameObjects;
     };
 
 

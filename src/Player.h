@@ -10,20 +10,25 @@
 #include"Level.h"
 #include"Geometry.h"
 #include"Constants.h"
+#include"MovingObject.h"
+#include"MagicBullet.h"
 
-class Player{
+class Player : MovingObject{
     
     public:
-        Player(SDL_Renderer*, Level &l, vec2di &c);
+        Player(SDL_Renderer*, Level &l, vec2di &c, int x, int y);
         ~Player();
         void render();
         void update();
         void setDirection(int d);
         void stop();
         void jump();
+        vec2di getStaffPosition();
+        short getDirection();
         void update_interp(int);
         vec2di getTile();
         
+        typedef MovingObject super; //for calling the super class
 
     private:
         //functions:
@@ -36,17 +41,10 @@ class Player{
         SDL_Rect* getCurrentRectangle();
         //fields
         /* SDL stuff */ 
-        SDL_Renderer *gameRenderer;
         /* references to game objects & structs */
         Spritesheet spritesheet;
         Level &level;
-        vec2di &camera;
         /* velocity & position informatien */
-        vec2df vel;        
-        vec2di pos;
-        vec2di interppos;
-        vec2df remainder;
-        vec2df interpremainder;
         int height;
         int width;
         short direction;
