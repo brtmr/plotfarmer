@@ -65,14 +65,15 @@ int main(int argc, char** argv)
 }
 
 
-Game::Game(SDL_Window* w, SDL_Renderer* r) : level(), 
+Game::Game(SDL_Window* w, SDL_Renderer* r) : 
+    gameOver(false),
+    gameWindow(w),
+    gameRenderer(r),
+    level(),
     player(r, level, camera),
-    tilemanager(r, level, camera)
+    tilemanager(r, level, camera),
+    camera({0,0})
 {
-    camera = {0,0};
-    gameWindow  =  w;
-    gameRenderer = r;     
-    gameOver    = false;
 }
 
 Game::~Game(){
