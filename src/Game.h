@@ -30,10 +30,10 @@ class Game{
         //fields        
         SDL_Window*   gameWindow;       
         SDL_Renderer* gameRenderer;       
-        Player *player;
-        Tilemanager *tilemanager;
-        Level *level;
-        vec2di camera;
+        Level       level;
+        Player      player;
+        Tilemanager tilemanager;
+        vec2di      camera;
     };
 
 

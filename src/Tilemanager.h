@@ -15,7 +15,7 @@ class Tilemanager{
     
     public:
         
-        Tilemanager(SDL_Renderer* r, Level* l, vec2di *c);
+        Tilemanager(SDL_Renderer* r, Level &l, vec2di &c);
         ~Tilemanager();
         void render();
         
@@ -27,10 +27,10 @@ class Tilemanager{
         //fields
         bool redraw;
         SDL_Renderer* gameRenderer;
-        Spritesheet* spritesheet;
         SDL_Texture* skyTexture;
-        Level *level;
-        vec2di *camera;
+        Spritesheet spritesheet;
+        Level  &level;
+        vec2di &camera;
         /* for splitting the level into chunks to be drawn*/
 
     };

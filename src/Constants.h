@@ -2,12 +2,12 @@
 #define CONSTANTS_H
 
 /* sizes & scales */
-const int SCALE = 4;
+const int SCALE = 3;
 const int BLOCKSIZE = 16;
 const int SMALLOFFSET = 0;
 const int SCALEDBLOCK = BLOCKSIZE * SCALE;
-const int SCREEN_WIDTH  = 2048;
-const int SCREEN_HEIGHT = 1152;
+const int SCREEN_WIDTH  = 1024;
+const int SCREEN_HEIGHT = 768;
 
 /* speeds and accelerations */
 const float GRAVITY   = 0.6 * SCALE;

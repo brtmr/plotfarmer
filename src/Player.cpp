@@ -1,14 +1,13 @@
 #include"Player.h"
 #include<cstdio>
 
-Player::Player(SDL_Renderer* renderer, Level* l, vec2di *c)
+Player::Player(SDL_Renderer* renderer, Level &l, vec2di &c) : 
+    spritesheet("sprites/wiz_staff_down.png",1,3,3,renderer),
+    level(l), camera(c)
 {
-    level        = l;
     gameRenderer = renderer;
-    camera       = c;
-    spritesheet = new Spritesheet("sprites/wiz_staff_down.png",1,3,3,renderer);
-    height = spritesheet->singleHeight*SCALE;
-    width  = spritesheet->singleWidth*SCALE ;
+    height = spritesheet.singleHeight*SCALE;
+    width  = spritesheet.singleWidth*SCALE ;
     pos.x = 5;
     pos.y = 40;
     remainder.x = 0;
@@ -18,8 +17,8 @@ Player::Player(SDL_Renderer* renderer, Level* l, vec2di *c)
     direction = DIRECTIONRIGHT;
     dstRect.x = 0;
     dstRect.y = 0;
-    dstRect.w = SCALE*(spritesheet->singleWidth);
-    dstRect.h = SCALE*(spritesheet->singleHeight);
+    dstRect.w = SCALE*(spritesheet.singleWidth);
+    dstRect.h = SCALE*(spritesheet.singleHeight);
     running = false;
     inJump  = true;
     interpX = true;
@@ -27,7 +26,6 @@ Player::Player(SDL_Renderer* renderer, Level* l, vec2di *c)
 
 Player::~Player()
 {
-    delete spritesheet;
 }
 
 void Player::update()
@@ -55,15 +53,15 @@ void Player::update()
 
 void Player::stayInLevel()
 {
-    if ( pos.y+height > (level->height*SCALEDBLOCK) )
+    if ( pos.y+height > (level.height*SCALEDBLOCK) )
     {
-        pos.y = (level->width*SCALEDBLOCK) - height - SMALLOFFSET;
+        pos.y = (level.height*SCALEDBLOCK) - height - SMALLOFFSET;
         vel.y = 0;
         inJump=false;
     }
-    if ( pos.x+width > (level->width*SCALEDBLOCK) )
+    if ( pos.x+width > (level.width*SCALEDBLOCK) )
     {
-        pos.x = (level->width*SCALEDBLOCK) - width - SMALLOFFSET;
+        pos.x = (level.width*SCALEDBLOCK) - width - SMALLOFFSET;
         vel.x = 0;
     }
     if ( pos.y < 0 )
@@ -88,17 +86,17 @@ void Player::checkIfFalling(float prevvely)
 void Player::setCamera()
 {
     if (interppos.x<SCREEN_WIDTH/2) 
-        camera->x = 0;
-    else if(interppos.x > (level->pixelWidth)-(SCREEN_WIDTH/2)) 
-        camera->x = (level->pixelWidth)-SCREEN_WIDTH;
+        camera.x = 0;
+    else if(interppos.x > (level.pixelWidth)-(SCREEN_WIDTH/2)) 
+        camera.x = (level.pixelWidth)-SCREEN_WIDTH;
     else 
-        camera->x = interppos.x-SCREEN_WIDTH/2;
+        camera.x = interppos.x-SCREEN_WIDTH/2;
     if (interppos.y<SCREEN_HEIGHT/2) 
-        camera->y = 0;
-    else if(interppos.y > (level->pixelHeight)-(SCREEN_HEIGHT/2)) 
-        camera->y = (level->pixelHeight)-SCREEN_HEIGHT;
+        camera.y = 0;
+    else if(interppos.y > (level.pixelHeight)-(SCREEN_HEIGHT/2)) 
+        camera.y = (level.pixelHeight)-SCREEN_HEIGHT;
     else 
-        camera->y = interppos.y-SCREEN_HEIGHT/2;
+        camera.y = interppos.y-SCREEN_HEIGHT/2;
 }
 
 void Player::updateBounding()
@@ -128,7 +126,7 @@ void Player::handleCollision()
     {
         for (int j=minj; j<=maxj; j++)
         {
-            if (level->isSolid(i,j))
+            if (level.isSolid(i,j))
             {
                 tile.x0 = j*SCALEDBLOCK;
                 tile.x1 = (j+1)*SCALEDBLOCK;
@@ -156,7 +154,7 @@ bool Player::didIHitMyHead()
     int i  = (bounding.y0 / SCALEDBLOCK)-1;
     int j0 = ((bounding.x0) / SCALEDBLOCK);
     int j1 = ((bounding.x1) / SCALEDBLOCK);
-    return (level->isSolid(i,j0) || level->isSolid(i,j1));
+    return (level.isSolid(i,j0) || level.isSolid(i,j1));
 }
 
 void Player::setDirection(int d)
@@ -200,19 +198,19 @@ void Player::render()
     vec2di renderpos;
     renderpos.x = (interppos.x)+roundf(interpremainder.x);
     renderpos.y = (interppos.y)+roundf(interpremainder.y);
-    dstRect.x = renderpos.x-camera->x;
-    dstRect.y = renderpos.y-camera->y;
+    dstRect.x = renderpos.x-camera.x;
+    dstRect.y = renderpos.y-camera.y;
     if (direction == DIRECTIONRIGHT)
     SDL_RenderCopy(
         gameRenderer,
-        spritesheet->sprites,
+        spritesheet.sprites,
         getCurrentRectangle(),
         &dstRect   
     ); 
     if (direction == DIRECTIONLEFT)
     SDL_RenderCopyEx(
         gameRenderer,
-        spritesheet->sprites,
+        spritesheet.sprites,
         getCurrentRectangle(),
         &dstRect,
         0,
@@ -223,9 +221,9 @@ void Player::render()
 
 SDL_Rect* Player::getCurrentRectangle()
 {   if (inJump)
-    return &(spritesheet->clipRectangles.at(2));
+    return &(spritesheet.clipRectangles.at(2));
     if (!running)
-    return &(spritesheet->clipRectangles.at(0));
+    return &(spritesheet.clipRectangles.at(0));
     int i;
     int spriteDuration = 80; 
     long which = SDL_GetTicks()/spriteDuration;
@@ -233,7 +231,7 @@ SDL_Rect* Player::getCurrentRectangle()
     if (which % 4 == 1) i = 1;
     if (which % 4 == 2) i = 2;
     if (which % 4 == 3) i = 1;    
-    return &(spritesheet->clipRectangles.at(i));
+    return &(spritesheet.clipRectangles.at(i));
 }
 
 /* just updates the interpolated values. does _not_ change game state */

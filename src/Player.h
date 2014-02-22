@@ -14,7 +14,7 @@
 class Player{
     
     public:
-        Player(SDL_Renderer*, Level* l, vec2di *c);
+        Player(SDL_Renderer*, Level &l, vec2di &c);
         ~Player();
         void render();
         void update();
@@ -36,15 +36,15 @@ class Player{
         SDL_Rect* getCurrentRectangle();
         //fields
         SDL_Rect dstRect;
-        SDL_Renderer* gameRenderer;
-        Level* level;
-        Spritesheet* spritesheet;
+        SDL_Renderer *gameRenderer;
+        Spritesheet spritesheet;
+        Level &level;
         vec2df vel;        
         vec2di pos;
         vec2di interppos;
         vec2df remainder;
         vec2df interpremainder;
-        vec2di *camera;
+        vec2di &camera;
         int height;
         int width;
         short direction;
@@ -53,6 +53,7 @@ class Player{
         bool inJump;
         bool interpX;
         int acc_counter;
+        const char* path = "sprites/wiz_staff_down.png";
     };
 
 #endif

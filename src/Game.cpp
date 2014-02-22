@@ -17,8 +17,8 @@ int main(int argc, char** argv)
         SDL_WINDOWPOS_UNDEFINED,
         SCREEN_WIDTH,
         SCREEN_HEIGHT,
-        SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL
-        //0
+        //SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL
+        0
         );
     if (gameWindow==NULL)
     {
@@ -65,23 +65,19 @@ int main(int argc, char** argv)
 }
 
 
-Game::Game(SDL_Window* w, SDL_Renderer* r)
+Game::Game(SDL_Window* w, SDL_Renderer* r) : level(), 
+    player(r, level, camera),
+    tilemanager(r, level, camera)
 {
-    camera.x = 0;
-    camera.y = 0;
+    camera = {0,0};
     gameWindow  =  w;
     gameRenderer = r;     
-    level       = new Level();
-    player      = new Player(gameRenderer, level, &camera);
-    tilemanager = new Tilemanager(gameRenderer, level, &camera);
     gameOver    = false;
 }
 
 Game::~Game(){
     SDL_DestroyRenderer(gameRenderer);
     SDL_DestroyWindow(gameWindow);
-    delete player;
-    delete tilemanager;
     }
 
 void Game::gameMainLoop()
@@ -110,21 +106,21 @@ void Game::handleKey(SDL_Event e)
     {
         if ( e.key.keysym.sym == SDLK_LEFT)
         {
-            player->setDirection(DIRECTIONLEFT);
+            player.setDirection(DIRECTIONLEFT);
         }
         if ( e.key.keysym.sym == SDLK_RIGHT)
         {
-            player->setDirection(DIRECTIONRIGHT);
+            player.setDirection(DIRECTIONRIGHT);
         }
         if ( e.key.keysym.sym == SDLK_UP)
         {
-            player->jump();
+            player.jump();
         }
     }
     if(e.type ==SDL_KEYUP)
     {
         if ( e.key.keysym.sym == SDLK_LEFT || e.key.keysym.sym == SDLK_RIGHT)
-            player->stop();
+            player.stop();
     }
 }
 
@@ -142,15 +138,15 @@ void Game::update()
             handleKey(e);
         }
     }
-    player->update();
+    player.update();
 }
 
 void Game::render(float interpolation){
-    player->update_interp(interpolation);
+    player.update_interp(interpolation);
     
     SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 255);
     SDL_RenderClear(gameRenderer);
-    tilemanager->render();
-    player->render();
+    tilemanager.render();
+    player.render();
     SDL_RenderPresent(gameRenderer);
     }
