@@ -1,5 +1,4 @@
 #include"Player.h"
-#include<cstdio>
 
 
 Player::Player(SDL_Renderer *renderer, Level &l, vec2di &c, int x, int y):
@@ -95,7 +94,7 @@ void Player::updateBounding()
      
 void Player::handleCollision()
 {
-    interpX = true;
+    interpXcnt=(interpXcnt>0)?interpXcnt-1:interpXcnt;
     bool iMightHaveHitMyHead = false;
     int mini = bounding.y0/SCALEDBLOCK;
     int maxi = bounding.y1/SCALEDBLOCK;
@@ -116,11 +115,11 @@ void Player::handleCollision()
                 Geometry::getMTV(bounding, tile, &x, &y);
                 pos.x = pos.x + x;
                 pos.y = pos.y + y;
-                updateBounding();
                 if (y<0 && vel.y>0) inJump = false;
                 if (y<0) vel.y = 0;
                 if (y>0) iMightHaveHitMyHead = true;
-                if (x!=0) interpX = false;
+                if (x!=0) {interpXcnt = 1; vel.x = 0;}
+                updateBounding();
             }
         }
     }
@@ -133,8 +132,9 @@ void Player::handleCollision()
 bool Player::didIHitMyHead()
 {
     int i  = (bounding.y0 / SCALEDBLOCK)-1;
-    int j0 = ((bounding.x0) / SCALEDBLOCK);
-    int j1 = ((bounding.x1) / SCALEDBLOCK);
+    int j0 = ((bounding.x0+1) / SCALEDBLOCK);
+    int j1 = ((bounding.x1-1) / SCALEDBLOCK);
+    
     return (level.isSolid(i,j0) || level.isSolid(i,j1));
 }
 

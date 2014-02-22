@@ -25,7 +25,7 @@ class MovingObject
         bool hasWeight;
         SDL_Renderer *gameRenderer;
         vec2di &camera;
-        bool interpX;
+        int interpXcnt;
 };
 
 #endif

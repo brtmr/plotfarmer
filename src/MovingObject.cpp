@@ -9,7 +9,7 @@ MovingObject::MovingObject(int x, int y, SDL_Renderer *r, vec2di &c, bool hW):
     hasWeight(hW),
     gameRenderer(r),
     camera(c),
-    interpX(true)
+    interpXcnt(0)
 {}
 
 void MovingObject::update()
@@ -30,7 +30,7 @@ void MovingObject::update()
 
 void MovingObject::update_interp(int interpolation)
 {
-    if (interpX)
+    if (interpXcnt==0)
     {
         float diffX = vel.x * interpolation + remainder.x;
         interppos.x = pos.x + roundf(diffX);

@@ -101,23 +101,19 @@ void Game::gameMainLoop()
     }
 }
 
-void Game::handleKey(SDL_Event e)
+void Game::handleKeys()
 {
-    if(e.type ==SDL_KEYDOWN)
-    {
-        if ( e.key.keysym.sym == SDLK_LEFT)
-        {
-            player.setDirection(DIRECTIONLEFT);
-        }
-        if ( e.key.keysym.sym == SDLK_RIGHT)
-        {
-            player.setDirection(DIRECTIONRIGHT);
-        }
-        if ( e.key.keysym.sym == SDLK_UP)
-        {
-            player.jump();
-        }
-        if ( e.key.keysym.sym == SDLK_SPACE)
+    SDL_PumpEvents();
+    const Uint8 *state = SDL_GetKeyboardState(NULL);
+    if (state[SDL_SCANCODE_LEFT]) 
+        player.setDirection(DIRECTIONLEFT);
+    if (state[SDL_SCANCODE_RIGHT]) 
+        player.setDirection(DIRECTIONRIGHT);
+    if (!state[SDL_SCANCODE_LEFT] && !state[SDL_SCANCODE_RIGHT])
+        player.stop(); 
+    if (state[SDL_SCANCODE_UP]) 
+        player.jump();
+    if (state[SDL_SCANCODE_X]) 
         {
             vec2di pos = player.getStaffPosition();
             std::shared_ptr<MagicBullet> bullet = make_shared<MagicBullet>
@@ -125,12 +121,6 @@ void Game::handleKey(SDL_Event e)
                 gameRenderer, camera, player.getDirection());
             gameObjects.push_back(bullet);
         }
-    }
-    if(e.type ==SDL_KEYUP)
-    {
-        if ( e.key.keysym.sym == SDLK_LEFT || e.key.keysym.sym == SDLK_RIGHT)
-            player.stop();
-    }
 }
 
 void Game::update()
@@ -140,13 +130,11 @@ void Game::update()
     {
         if(e.type == SDL_QUIT)
         {
-            gameOver = true;
-        }
-            if(e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
-        {
-            handleKey(e);
+        gameOver = true;
         }
     }
+    handleKeys();
+
     player.update();
     //delete dead Objects
     gameObjects.erase(std::remove_if

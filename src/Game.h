@@ -29,7 +29,7 @@ class Game{
         void update();
         bool init_SDL;
         bool gameOver;
-        void handleKey(SDL_Event);
+        void handleKeys();
         //fields        
         SDL_Window*   gameWindow;       
         SDL_Renderer* gameRenderer;       

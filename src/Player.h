@@ -50,7 +50,6 @@ class Player : MovingObject{
         short direction;
         bool running;
         bool inJump;
-        bool interpX;
         int acc_counter;
         rectangle bounding;
         SDL_Rect dstRect;
