@@ -7,22 +7,22 @@ plotfarmer: $(OBJS)
 	$(CC) $(LFlags) $(OBJS) -o plotfarmer
 
 Game.o: src/Game.cpp src/Game.h src/Player.h src/Tilemanager.h src/Constants.h
-	$(CC) -c $(CFlags) $(LFlags) src/Game.cpp -o Game.o
+	$(CC) -c $(CFlags) src/Game.cpp -o Game.o
 
 Player.o: src/Player.h src/Player.cpp src/Spritesheet.h src/Constants.h src/MovingObject.h
-	$(CC) -c $(CFlags) $(LFlags) src/Player.cpp -o Player.o
+	$(CC) -c $(CFlags) src/Player.cpp -o Player.o
 
 Tilemanager.o: src/Tilemanager.cpp src/Tilemanager.h src/Spritesheet.h src/Constants.h
-	$(CC) -c $(CFlags) $(LFlags) src/Tilemanager.cpp -o Tilemanager.o
+	$(CC) -c $(CFlags) src/Tilemanager.cpp -o Tilemanager.o
 
 Spritesheet.o: src/Spritesheet.cpp src/Spritesheet.h
-	$(CC) -c $(CFlags) $(LFlags) src/Spritesheet.cpp -o Spritesheet.o
+	$(CC) -c $(CFlags) src/Spritesheet.cpp -o Spritesheet.o
 
 Level.o: src/Level.cpp src/Level.h src/Constants.h
-	$(CC) -c $(CFlags) $(LFlags) src/Level.cpp -o Level.o
+	$(CC) -c $(CFlags) src/Level.cpp -o Level.o
 
 Geometry.o: src/Geometry.cpp src/Geometry.h src/Constants.h
-	$(CC) -c $(CFlags) $(LFlags) src/Geometry.cpp -o Geometry.o
+	$(CC) -c $(CFlags) src/Geometry.cpp -o Geometry.o
 
 MovingObject.o: src/MovingObject.cpp src/MovingObject.h src/Constants.h
 	$(CC) $(CFlags) -c src/MovingObject.cpp -o MovingObject.o

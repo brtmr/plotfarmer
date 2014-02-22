@@ -2,7 +2,8 @@
 
 MagicBullet::MagicBullet(int x, int y, SDL_Renderer *r, vec2di &c, int direction):
 super(x,y,r,c,false),
-spritesheet("sprites/ball.png",1,1,1,r)
+spritesheet("sprites/ball.png",1,1,1,r),
+timer(0)
 {
     if (direction == DIRECTIONRIGHT)
     vel.x = BULLETSPEED;
@@ -11,6 +12,7 @@ spritesheet("sprites/ball.png",1,1,1,r)
 
 void MagicBullet::render()
 {
+    if (isDead()) return;
     vec2di renderpos;
     renderpos.x = (interppos.x)+roundf(interpremainder.x);
     renderpos.y = (interppos.y)+roundf(interpremainder.y);
@@ -27,6 +29,17 @@ void MagicBullet::render()
         &(dstRec));
 }
 
+void MagicBullet::update()
+{
+    super::update();
+    ++timer;
+}
 
+bool MagicBullet::isDead()
+{
+    return timer > BULLET_LIFETIME;
+}
 
-
+MagicBullet::~MagicBullet()
+{
+}

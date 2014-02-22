@@ -13,6 +13,8 @@
 #include<SDL2/SDL.h>
 #include<iostream>
 #include<vector>
+#include<memory>
+#include<algorithm> 
 
 class Game{
     
@@ -35,7 +37,7 @@ class Game{
         Player      player;
         Tilemanager tilemanager;
         vec2di      camera;
-        std::vector<MovingObject *> gameObjects;
+        std::vector<std::shared_ptr<MovingObject>> gameObjects;
     };
 
 

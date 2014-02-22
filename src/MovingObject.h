@@ -12,6 +12,7 @@ class MovingObject
         MovingObject(int x, int y, SDL_Renderer* renderer, vec2di &c, bool hW);
         virtual void update();
         virtual void render();
+        virtual bool isDead();
         virtual void update_interp(int interpolation);
         
         /* velocity & position information */

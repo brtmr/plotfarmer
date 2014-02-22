@@ -48,3 +48,5 @@ void MovingObject::update_interp(int interpolation)
 }
 
 void MovingObject::render(){}
+
+bool MovingObject::isDead(){return false;}

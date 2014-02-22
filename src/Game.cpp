@@ -120,10 +120,9 @@ void Game::handleKey(SDL_Event e)
         if ( e.key.keysym.sym == SDLK_SPACE)
         {
             vec2di pos = player.getStaffPosition();
-            MagicBullet *bullet = new MagicBullet
+            std::shared_ptr<MagicBullet> bullet = make_shared<MagicBullet>
                 (pos.x, pos.y, 
                 gameRenderer, camera, player.getDirection());
-            
             gameObjects.push_back(bullet);
         }
     }
@@ -148,10 +147,14 @@ void Game::update()
             handleKey(e);
         }
     }
-    
     player.update();
+    //delete dead Objects
+    gameObjects.erase(std::remove_if
+        (gameObjects.begin(), gameObjects.end(), 
+                       [](std::shared_ptr<MovingObject> o) { return o->isDead(); }), 
+        gameObjects.end());
     //update all other game Objects
-    for(std::vector<MovingObject*>::iterator it = gameObjects.begin(); it != gameObjects.end(); ++it) 
+    for(std::vector<std::shared_ptr<MovingObject>>::iterator it = gameObjects.begin(); it != gameObjects.end(); ++it) 
     {
         (*it)->update();
     }
@@ -166,7 +169,7 @@ void Game::render(float interpolation){
     player.render();
     
     //render all other game Objects
-    for(std::vector<MovingObject*>::iterator it = gameObjects.begin(); it != gameObjects.end(); ++it) 
+    for(std::vector<std::shared_ptr<MovingObject>>::iterator it = gameObjects.begin(); it != gameObjects.end(); ++it) 
     {
         (*it)->update_interp(interpolation);
         (*it)->render();

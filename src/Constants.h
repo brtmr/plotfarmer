@@ -37,4 +37,6 @@ const bool DEBUG = 0;
 const int TICKS_PER_SECOND = 40;
 const int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
 const int MAX_FRAMESKIP = 5;
+
+const int BULLET_LIFETIME = 20;
 #endif
