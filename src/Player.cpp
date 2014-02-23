@@ -161,7 +161,7 @@ void Player::stop()
     
 void Player::jump()
 {
-    if (inJump) return;
+    //if (inJump) return;
     vel.y = -JUMPSPEED;
     inJump = true;
 }

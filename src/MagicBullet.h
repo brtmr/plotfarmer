@@ -4,13 +4,14 @@
 #include"Geometry.h"
 #include"MovingObject.h"
 #include"Spritesheet.h"
+#include"Level.h"
 #include<SDL2/SDL.h>
 #include<iostream>
 
 class MagicBullet : public MovingObject{
     
     public:
-        MagicBullet(int x, int y, SDL_Renderer *r, vec2di &c, int direction);
+        MagicBullet(int x, int y, SDL_Renderer *r, vec2di &c, Level &l, int direction);
         ~MagicBullet();
         void render();
         void update();
@@ -19,8 +20,10 @@ class MagicBullet : public MovingObject{
 
     
     private:
+        bool alive;
         Spritesheet spritesheet;
         int timer;
+        Level &level;
 };
 
 #endif

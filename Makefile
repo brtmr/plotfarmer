@@ -1,6 +1,6 @@
 CC = g++
 CFlags = -Wall -Werror -pedantic-errors -g -ggdb -std=c++11 -O3
-LFlags = -lSDL2 -lSDL2_image 
+LFlags = -lSDL2 -lSDL2_image -flto
 OBJS = Player.o Tilemanager.o Spritesheet.o Game.o Level.o Geometry.o MovingObject.o MagicBullet.o
 
 plotfarmer: $(OBJS)

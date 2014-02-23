@@ -118,7 +118,7 @@ void Game::handleKeys()
             vec2di pos = player.getStaffPosition();
             std::shared_ptr<MagicBullet> bullet = make_shared<MagicBullet>
                 (pos.x, pos.y, 
-                gameRenderer, camera, player.getDirection());
+                gameRenderer, camera, level, player.getDirection());
             gameObjects.push_back(bullet);
         }
 }
