@@ -113,13 +113,14 @@ void Game::handleKeys()
         player.stop(); 
     if (state[SDL_SCANCODE_UP]) 
         player.jump();
-    if (state[SDL_SCANCODE_X]) 
+    if (state[SDL_SCANCODE_X] && player.readyToFire()) 
         {
             vec2di pos = player.getStaffPosition();
             std::shared_ptr<MagicBullet> bullet = make_shared<MagicBullet>
                 (pos.x, pos.y, 
                 gameRenderer, camera, level, player.getDirection());
             gameObjects.push_back(bullet);
+            player.hightenBulletCounter();
         }
 }
 

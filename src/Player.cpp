@@ -11,7 +11,8 @@ Player::Player(SDL_Renderer *renderer, Level &l, vec2di &c, int x, int y):
     running(false),
     inJump(true),
     acc_counter(0),
-    dstRect({0,0,width,height})
+    dstRect({0,0,width,height}),
+    bullet_counter(0)
 {}
 
 Player::~Player()
@@ -21,14 +22,13 @@ Player::~Player()
 void Player::update()
 {
     float prevvely = vel.y;
-    
     super::update();
-    
     stayInLevel();
     updateBounding();
     handleCollision();
     handleCollision();
     checkIfFalling(prevvely);
+    if (bullet_counter!=0) bullet_counter--;
 }
 
 void Player::stayInLevel()
@@ -161,7 +161,7 @@ void Player::stop()
     
 void Player::jump()
 {
-    //if (inJump) return;
+    if (inJump) return;
     vel.y = -JUMPSPEED;
     inJump = true;
 }
@@ -233,4 +233,14 @@ else
 short Player::getDirection()
 {
     return direction;
+}
+
+bool Player::readyToFire()
+{
+    return (bullet_counter==0);
+}
+
+void Player::hightenBulletCounter()
+{
+    bullet_counter = FRAMES_PER_BULLET;
 }

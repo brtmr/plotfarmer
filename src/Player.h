@@ -23,6 +23,8 @@ class Player : MovingObject{
         void setDirection(int d);
         void stop();
         void jump();
+        void hightenBulletCounter();
+        bool readyToFire();
         vec2di getStaffPosition();
         short getDirection();
         void update_interp(int);
@@ -53,6 +55,7 @@ class Player : MovingObject{
         int acc_counter;
         rectangle bounding;
         SDL_Rect dstRect;
+        int bullet_counter;
     };
 
 #endif

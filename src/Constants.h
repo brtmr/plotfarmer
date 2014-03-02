@@ -2,7 +2,7 @@
 #define CONSTANTS_H
 
 /* sizes & scales */
-const int SCALE = 3;
+const int SCALE = 4;
 const int BLOCKSIZE = 16;
 const int SMALLOFFSET = 0;
 const int SCALEDBLOCK = BLOCKSIZE * SCALE;
@@ -39,4 +39,5 @@ const int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
 const int MAX_FRAMESKIP = 5;
 
 const int BULLET_LIFETIME = 20;
+const int FRAMES_PER_BULLET = 15;
 #endif

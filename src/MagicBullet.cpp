@@ -11,7 +11,7 @@ level(l)
     
     vel.x = SPEEDLIMIT;
     else vel.x = - SPEEDLIMIT;
-    vel.y = SPEEDLIMIT;
+    vel.y = 0;
 }
 
 void MagicBullet::render()

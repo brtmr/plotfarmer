@@ -15,6 +15,9 @@ Player.o: src/Player.h src/Player.cpp src/Spritesheet.h src/Constants.h src/Movi
 Tilemanager.o: src/Tilemanager.cpp src/Tilemanager.h src/Spritesheet.h src/Constants.h
 	$(CC) -c $(CFlags) src/Tilemanager.cpp -o Tilemanager.o
 
+Tile.o :src/Tile.h src/Tile.cpp src/Spritesheet.h src/Constants.h
+	$(CC) -c $(CFlags) src/Tile.cpp -o Tile.o
+
 Spritesheet.o: src/Spritesheet.cpp src/Spritesheet.h
 	$(CC) -c $(CFlags) src/Spritesheet.cpp -o Spritesheet.o
 
