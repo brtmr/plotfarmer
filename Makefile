@@ -17,3 +17,6 @@ plotfarmer: $(OBJS)
 
 clean:
 	\rm -f build/*.o plotfarmer
+
+remove_orig: 
+	\rm -f src/*.orig 
