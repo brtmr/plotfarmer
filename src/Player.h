@@ -37,10 +37,10 @@ class Player : MovingObject{
         //functions:
         void handleCollision();
         void updateBounding();
-        bool didIHitMyHead();
+        bool solidAbove();
+        bool solidBelow();
         void setCamera();
         void stayInLevel();
-        void checkIfFalling(float);
         SDL_Rect* getCurrentRectangle();
         //fields
         /* SDL stuff */
@@ -53,7 +53,6 @@ class Player : MovingObject{
         short direction;
         bool running;
         bool inJump;
-        int acc_counter;
         rectangle bounding;
         SDL_Rect dstRect;
         int bullet_counter;

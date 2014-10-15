@@ -10,7 +10,6 @@ Player::Player(SDL_Renderer *renderer, Level &l, vec2di &c, int x, int y):
     direction(DIRECTIONRIGHT),
     running(false),
     inJump(true),
-    acc_counter(0),
     dstRect({0, 0, width, height}),
         bullet_counter(0)
 {}
@@ -21,13 +20,11 @@ Player::~Player()
 
 void Player::update()
 {
-    float prevvely = vel.y;
     super::update();
     stayInLevel();
     updateBounding();
     handleCollision();
     handleCollision();
-    checkIfFalling(prevvely);
     if (bullet_counter != 0) bullet_counter--;
 }
 
@@ -54,13 +51,6 @@ void Player::stayInLevel()
         pos.x = SMALLOFFSET;
         vel.x = 0;
     }
-}
-
-void Player::checkIfFalling(float prevvely)
-{
-    if (vel.y > prevvely) ++acc_counter;
-    else acc_counter = 0;
-    if (acc_counter >= FALLCOUNTER) inJump = true;
 }
 
 void Player::setCamera()
@@ -95,7 +85,6 @@ void Player::updateBounding()
 void Player::handleCollision()
 {
     interpXcnt = (interpXcnt > 0) ? interpXcnt - 1 : interpXcnt;
-    bool iMightHaveHitMyHead = false;
     int mini = bounding.y0 / SCALEDBLOCK;
     int maxi = bounding.y1 / SCALEDBLOCK;
     int minj = bounding.x0 / SCALEDBLOCK;
@@ -115,9 +104,6 @@ void Player::handleCollision()
                 Geometry::getMTV(bounding, tile, &x, &y);
                 pos.x = pos.x + x;
                 pos.y = pos.y + y;
-                if (y < 0 && vel.y > 0) inJump = false;
-                if (y < 0) vel.y = 0;
-                if (y > 0) iMightHaveHitMyHead = true;
                 if (x != 0)
                 {
                     interpXcnt = 1;
@@ -127,19 +113,41 @@ void Player::handleCollision()
             }
         }
     }
-    if (iMightHaveHitMyHead && didIHitMyHead())
+    if (solidAbove())
     {
         vel.y = 0;
     }
+    if (solidBelow())
+    {
+        vel.y = 0;
+        inJump = false;
+    }
 }
 
-bool Player::didIHitMyHead()
+bool Player::solidAbove()
 {
-    int i  = (bounding.y0 / SCALEDBLOCK) - 1;
+    int i  = ((bounding.y0 - 1) / SCALEDBLOCK);
     int j0 = ((bounding.x0 + 1) / SCALEDBLOCK);
     int j1 = ((bounding.x1 - 1) / SCALEDBLOCK);
 
-    return (level.isSolid(i, j0) || level.isSolid(i, j1));
+    if ( level.isSolid(i, j0) ||  level.isSolid(i, j1) )
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Player::solidBelow()
+{
+    int i  = ((bounding.y1 + 1) / SCALEDBLOCK);
+    int j0 = ((bounding.x0 + 1) / SCALEDBLOCK);
+    int j1 = ((bounding.x1 - 1) / SCALEDBLOCK);
+
+    if ( level.isSolid(i, j0) ||  level.isSolid(i, j1) )
+    {
+        return true;
+    }
+    return false;
 }
 
 void Player::setDirection(int d)
