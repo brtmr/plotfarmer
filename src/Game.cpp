@@ -5,7 +5,7 @@ using namespace std;
 int main(int argc, char** argv)
 {
 
-    if (SDL_Init( SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_TIMER ) !=0)
+    if (SDL_Init( SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_TIMER ) != 0)
     {
         cout << "SDL Initialization error. " << SDL_GetError() << endl;
         exit(-1);
@@ -20,7 +20,7 @@ int main(int argc, char** argv)
                                  //SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL
                                  0
                              );
-    if (gameWindow==NULL)
+    if (gameWindow == NULL)
     {
         cout << "SDL Window Initialization error. " << SDL_GetError() << endl;
         exit(-1);
@@ -32,7 +32,7 @@ int main(int argc, char** argv)
                                      SDL_RENDERER_ACCELERATED
                                  );
 
-    if (gameRenderer==NULL)
+    if (gameRenderer == NULL)
     {
         cout << "SDL Renderer Initialization error. " << SDL_GetError()
              << endl;
@@ -46,7 +46,7 @@ int main(int argc, char** argv)
         exit(-1);
     }
 
-    if (IMG_Init(IMG_INIT_PNG)!=IMG_INIT_PNG)
+    if (IMG_Init(IMG_INIT_PNG) != IMG_INIT_PNG)
     {
         cout << "SDL Image Initialization Error. "  << endl;
         exit(-1);
@@ -72,11 +72,12 @@ Game::Game(SDL_Window* w, SDL_Renderer* r) :
     level(),
     player(r, level, camera, 1, 1),
     tilemanager(r, level, camera),
-    camera({0,0})
+    camera({0, 0})
 {
 }
 
-Game::~Game() {
+Game::~Game()
+{
     SDL_DestroyRenderer(gameRenderer);
     SDL_DestroyWindow(gameWindow);
 }
@@ -86,9 +87,11 @@ void Game::gameMainLoop()
     long next_game_tick = SDL_GetTicks();
     int loops;
     float interpolation;
-    while( !gameOver ) {
+    while ( !gameOver )
+    {
         loops = 0;
-        while( SDL_GetTicks() > next_game_tick && loops < MAX_FRAMESKIP) {
+        while ( SDL_GetTicks() > next_game_tick && loops < MAX_FRAMESKIP)
+        {
             update();
             next_game_tick += SKIP_TICKS;
             loops++;
@@ -127,9 +130,9 @@ void Game::handleKeys()
 void Game::update()
 {
     SDL_Event e;
-    while(SDL_PollEvent(&e)!=0)
+    while (SDL_PollEvent(&e) != 0)
     {
-        if(e.type == SDL_QUIT)
+        if (e.type == SDL_QUIT)
         {
             gameOver = true;
         }
@@ -140,18 +143,20 @@ void Game::update()
     //delete dead Objects
     gameObjects.erase(std::remove_if
                       (gameObjects.begin(), gameObjects.end(),
-    [](std::shared_ptr<MovingObject> o) {
+                       [](std::shared_ptr<MovingObject> o)
+    {
         return o->isDead();
     }),
     gameObjects.end());
     //update all other game Objects
-    for(std::vector<std::shared_ptr<MovingObject>>::iterator it = gameObjects.begin(); it != gameObjects.end(); ++it)
+    for (std::vector<std::shared_ptr<MovingObject>>::iterator it = gameObjects.begin(); it != gameObjects.end(); ++it)
     {
         (*it)->update();
     }
 }
 
-void Game::render(float interpolation) {
+void Game::render(float interpolation)
+{
     player.update_interp(interpolation);
 
     SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 255);
@@ -160,11 +165,18 @@ void Game::render(float interpolation) {
     player.render();
 
     //render all other game Objects
-    for(std::vector<std::shared_ptr<MovingObject>>::iterator it = gameObjects.begin(); it != gameObjects.end(); ++it)
+    for (std::vector<std::shared_ptr<MovingObject>>::iterator it = gameObjects.begin(); it != gameObjects.end(); ++it)
     {
         (*it)->update_interp(interpolation);
         (*it)->render();
     }
 
     SDL_RenderPresent(gameRenderer);
+}
+
+void sdlError(std::string custom)
+{
+    std::cout << custom << std::endl;
+    std::cout << SDL_GetError() << std::endl;
+    exit(-1);
 }

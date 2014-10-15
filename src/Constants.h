@@ -14,7 +14,7 @@ const float GRAVITY   = 0.6 * SCALE;
 const float SPEED     = 4 * SCALE;
 const float JUMPSPEED = 7 * SCALE;
 const int FALLCOUNTER = 4;
-const float SPEEDLIMIT = SCALEDBLOCK / 2.1; 
+const float SPEEDLIMIT = SCALEDBLOCK / 2.1;
 
 const int BULLETSPEED = SPEEDLIMIT;
 
@@ -28,12 +28,12 @@ const int PXOFFSETR = 6 * SCALE;
 
 /* for splitting the level into chunks for buffering */
 const int CHUNKBORDER = 5;
-const int REDRAWLIMIT = 1; 
+const int REDRAWLIMIT = 1;
 
-/* display the grid + some info for debugging */ 
-const bool DEBUG = 0;
+/* display the grid + some info for debugging */
+const bool DEBUG = 1;
 
-/* DeWitters Game Loop */ 
+/* DeWitters Game Loop */
 const int TICKS_PER_SECOND = 40;
 const int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
 const int MAX_FRAMESKIP = 5;

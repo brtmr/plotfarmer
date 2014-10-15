@@ -1,20 +1,21 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include<SDL2/SDL_image.h>
 #include<SDL2/SDL.h>
-#include<vector>
-#include<iterator>
+#include<SDL2/SDL_image.h>
 #include<iostream>
-#include"Spritesheet.h"
-#include"Level.h"
-#include"Geometry.h"
+#include<iterator>
+#include<vector>
 #include"Constants.h"
-#include"MovingObject.h"
+#include"Geometry.h"
+#include"Level.h"
 #include"MagicBullet.h"
+#include"MovingObject.h"
+#include"Spritesheet.h"
+#include"MyMath.h"
 
 class Player : MovingObject{
-    
+
     public:
         Player(SDL_Renderer*, Level &l, vec2di &c, int x, int y);
         ~Player();
@@ -29,7 +30,7 @@ class Player : MovingObject{
         short getDirection();
         void update_interp(int);
         vec2di getTile();
-        
+
         typedef MovingObject super; //for calling the super class
 
     private:
@@ -42,7 +43,7 @@ class Player : MovingObject{
         void checkIfFalling(float);
         SDL_Rect* getCurrentRectangle();
         //fields
-        /* SDL stuff */ 
+        /* SDL stuff */
         /* references to game objects & structs */
         Spritesheet spritesheet;
         Level &level;
@@ -56,6 +57,6 @@ class Player : MovingObject{
         rectangle bounding;
         SDL_Rect dstRect;
         int bullet_counter;
-    };
+};
 
 #endif

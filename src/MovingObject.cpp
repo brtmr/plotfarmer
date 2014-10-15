@@ -1,11 +1,11 @@
 #include"MovingObject.h"
 
 MovingObject::MovingObject(int x, int y, SDL_Renderer *r, vec2di &c, bool hW):
-    vel({0,0}),
-    pos({x,y}),
-    interppos({x,y}),
-    remainder({0,0}),
-    interpremainder({0,0}),
+    vel({0, 0}),
+    pos({x, y}),
+    interppos({x, y}),
+    remainder({0, 0}),
+    interpremainder({0, 0}),
     hasWeight(hW),
     gameRenderer(r),
     camera(c),
@@ -16,10 +16,9 @@ void MovingObject::update()
 {
     //update velocity
     if (hasWeight) vel.y = vel.y + GRAVITY;
-    if ( vel.y < -SPEEDLIMIT ) vel.y = -SPEEDLIMIT;
-    if ( vel.y >  SPEEDLIMIT ) vel.y =  SPEEDLIMIT;
+    mymath::boundsFloat(&vel.y, -SPEEDLIMIT, SPEEDLIMIT);
     //update positions
-    float diffx,diffy;
+    float diffx, diffy;
     diffx = vel.x + remainder.x;
     pos.x = pos.x + roundf(diffx);
     remainder.x = diffx - roundf(diffx);
@@ -30,7 +29,7 @@ void MovingObject::update()
 
 void MovingObject::update_interp(int interpolation)
 {
-    if (interpXcnt==0)
+    if (interpXcnt == 0)
     {
         float diffX = vel.x * interpolation + remainder.x;
         interppos.x = pos.x + roundf(diffX);
@@ -49,6 +48,7 @@ void MovingObject::update_interp(int interpolation)
 
 void MovingObject::render() {}
 
-bool MovingObject::isDead() {
+bool MovingObject::isDead()
+{
     return false;
 }

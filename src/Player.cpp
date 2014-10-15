@@ -2,8 +2,8 @@
 
 
 Player::Player(SDL_Renderer *renderer, Level &l, vec2di &c, int x, int y):
-    super(x*SCALEDBLOCK,y*SCALEDBLOCK, renderer, c, true),
-    spritesheet("sprites/wiz_staff_down.png",1,3,3,renderer),
+    super(x*SCALEDBLOCK, y*SCALEDBLOCK, renderer, c, true),
+    spritesheet("sprites/wiz_staff_down.png", 1, 3, 3, renderer),
     level(l),
     height(spritesheet.singleHeight*SCALE),
     width(spritesheet.singleWidth*SCALE),
@@ -11,7 +11,7 @@ Player::Player(SDL_Renderer *renderer, Level &l, vec2di &c, int x, int y):
     running(false),
     inJump(true),
     acc_counter(0),
-    dstRect({0,0,width,height}),
+    dstRect({0, 0, width, height}),
         bullet_counter(0)
 {}
 
@@ -28,20 +28,20 @@ void Player::update()
     handleCollision();
     handleCollision();
     checkIfFalling(prevvely);
-    if (bullet_counter!=0) bullet_counter--;
+    if (bullet_counter != 0) bullet_counter--;
 }
 
 void Player::stayInLevel()
 {
-    if ( pos.y+height > (level.height*SCALEDBLOCK) )
+    if ( pos.y + height > (level.height * SCALEDBLOCK) )
     {
-        pos.y = (level.height*SCALEDBLOCK) - height - SMALLOFFSET;
+        pos.y = (level.height * SCALEDBLOCK) - height - SMALLOFFSET;
         vel.y = 0;
-        inJump=false;
+        inJump = false;
     }
-    if ( pos.x+width > (level.width*SCALEDBLOCK) )
+    if ( pos.x + width > (level.width * SCALEDBLOCK) )
     {
-        pos.x = (level.width*SCALEDBLOCK) - width - SMALLOFFSET;
+        pos.x = (level.width * SCALEDBLOCK) - width - SMALLOFFSET;
         vel.x = 0;
     }
     if ( pos.y < 0 )
@@ -60,29 +60,29 @@ void Player::checkIfFalling(float prevvely)
 {
     if (vel.y > prevvely) ++acc_counter;
     else acc_counter = 0;
-    if (acc_counter>=FALLCOUNTER) inJump = true;
+    if (acc_counter >= FALLCOUNTER) inJump = true;
 }
 
 void Player::setCamera()
 {
-    if (interppos.x<SCREEN_WIDTH/2)
+    if (interppos.x < SCREEN_WIDTH / 2)
         camera.x = 0;
-    else if(interppos.x > (level.pixelWidth)-(SCREEN_WIDTH/2))
-        camera.x = (level.pixelWidth)-SCREEN_WIDTH;
+    else if (interppos.x > (level.pixelWidth) - (SCREEN_WIDTH / 2))
+        camera.x = (level.pixelWidth) - SCREEN_WIDTH;
     else
-        camera.x = interppos.x-SCREEN_WIDTH/2;
-    if (interppos.y<SCREEN_HEIGHT/2)
+        camera.x = interppos.x - SCREEN_WIDTH / 2;
+    if (interppos.y < SCREEN_HEIGHT / 2)
         camera.y = 0;
-    else if(interppos.y > (level.pixelHeight)-(SCREEN_HEIGHT/2))
-        camera.y = (level.pixelHeight)-SCREEN_HEIGHT;
+    else if (interppos.y > (level.pixelHeight) - (SCREEN_HEIGHT / 2))
+        camera.y = (level.pixelHeight) - SCREEN_HEIGHT;
     else
-        camera.y = interppos.y-SCREEN_HEIGHT/2;
+        camera.y = interppos.y - SCREEN_HEIGHT / 2;
 }
 
 void Player::updateBounding()
 {
-    bounding.x0 = pos.x +         ((direction==DIRECTIONRIGHT)?PXOFFSETL:PXOFFSETR);
-    bounding.x1 = pos.x + width - ((direction==DIRECTIONRIGHT)?PXOFFSETR:PXOFFSETL);
+    bounding.x0 = pos.x +         ((direction == DIRECTIONRIGHT) ? PXOFFSETL : PXOFFSETR);
+    bounding.x1 = pos.x + width - ((direction == DIRECTIONRIGHT) ? PXOFFSETR : PXOFFSETL);
     bounding.y0 = pos.y;
     bounding.y1 = pos.y + height;
 }
@@ -94,31 +94,32 @@ void Player::updateBounding()
 
 void Player::handleCollision()
 {
-    interpXcnt=(interpXcnt>0)?interpXcnt-1:interpXcnt;
+    interpXcnt = (interpXcnt > 0) ? interpXcnt - 1 : interpXcnt;
     bool iMightHaveHitMyHead = false;
-    int mini = bounding.y0/SCALEDBLOCK;
-    int maxi = bounding.y1/SCALEDBLOCK;
-    int minj = bounding.x0/SCALEDBLOCK;
-    int maxj = bounding.x1/SCALEDBLOCK;
+    int mini = bounding.y0 / SCALEDBLOCK;
+    int maxi = bounding.y1 / SCALEDBLOCK;
+    int minj = bounding.x0 / SCALEDBLOCK;
+    int maxj = bounding.x1 / SCALEDBLOCK;
     rectangle tile;
-    int x,y;
-    for (int i=mini; i<=maxi; i++)
+    int x, y;
+    for (int i = mini; i <= maxi; i++)
     {
-        for (int j=minj; j<=maxj; j++)
+        for (int j = minj; j <= maxj; j++)
         {
-            if (level.isSolid(i,j))
+            if (level.isSolid(i, j))
             {
-                tile.x0 = j*SCALEDBLOCK;
-                tile.x1 = (j+1)*SCALEDBLOCK;
-                tile.y0 = i*SCALEDBLOCK;
-                tile.y1 = (i+1)*SCALEDBLOCK;
+                tile.x0 = j * SCALEDBLOCK;
+                tile.x1 = (j + 1) * SCALEDBLOCK;
+                tile.y0 = i * SCALEDBLOCK;
+                tile.y1 = (i + 1) * SCALEDBLOCK;
                 Geometry::getMTV(bounding, tile, &x, &y);
                 pos.x = pos.x + x;
                 pos.y = pos.y + y;
-                if (y<0 && vel.y>0) inJump = false;
-                if (y<0) vel.y = 0;
-                if (y>0) iMightHaveHitMyHead = true;
-                if (x!=0) {
+                if (y < 0 && vel.y > 0) inJump = false;
+                if (y < 0) vel.y = 0;
+                if (y > 0) iMightHaveHitMyHead = true;
+                if (x != 0)
+                {
                     interpXcnt = 1;
                     vel.x = 0;
                 }
@@ -134,11 +135,11 @@ void Player::handleCollision()
 
 bool Player::didIHitMyHead()
 {
-    int i  = (bounding.y0 / SCALEDBLOCK)-1;
-    int j0 = ((bounding.x0+1) / SCALEDBLOCK);
-    int j1 = ((bounding.x1-1) / SCALEDBLOCK);
+    int i  = (bounding.y0 / SCALEDBLOCK) - 1;
+    int j0 = ((bounding.x0 + 1) / SCALEDBLOCK);
+    int j1 = ((bounding.x1 - 1) / SCALEDBLOCK);
 
-    return (level.isSolid(i,j0) || level.isSolid(i,j1));
+    return (level.isSolid(i, j0) || level.isSolid(i, j1));
 }
 
 void Player::setDirection(int d)
@@ -180,10 +181,10 @@ vec2di Player::getTile()
 void Player::render()
 {
     vec2di renderpos;
-    renderpos.x = (interppos.x)+roundf(interpremainder.x);
-    renderpos.y = (interppos.y)+roundf(interpremainder.y);
-    dstRect.x = renderpos.x-camera.x;
-    dstRect.y = renderpos.y-camera.y;
+    renderpos.x = (interppos.x) + roundf(interpremainder.x);
+    renderpos.y = (interppos.y) + roundf(interpremainder.y);
+    dstRect.x = renderpos.x - camera.x;
+    dstRect.y = renderpos.y - camera.y;
     if (direction == DIRECTIONRIGHT)
         SDL_RenderCopy(
             gameRenderer,
@@ -204,13 +205,14 @@ void Player::render()
 }
 
 SDL_Rect* Player::getCurrentRectangle()
-{   if (inJump)
+{
+    if (inJump)
         return &(spritesheet.clipRectangles.at(2));
     if (!running)
         return &(spritesheet.clipRectangles.at(0));
     int i;
     int spriteDuration = 80;
-    long which = SDL_GetTicks()/spriteDuration;
+    long which = SDL_GetTicks() / spriteDuration;
     if (which % 4 == 0) i = 0;
     if (which % 4 == 1) i = 1;
     if (which % 4 == 2) i = 2;
@@ -228,9 +230,9 @@ void Player::update_interp(int interpolation)
 vec2di Player::getStaffPosition()
 {
     if (direction == DIRECTIONRIGHT)
-        return {pos.x + 12*SCALE, pos.y + 17*SCALE};
+        return {pos.x + 12 * SCALE, pos.y + 17 * SCALE};
     else
-        return {pos.x + 3*SCALE, pos.y + 17*SCALE};
+        return {pos.x + 3 * SCALE, pos.y + 17 * SCALE};
 }
 
 short Player::getDirection()
@@ -240,7 +242,7 @@ short Player::getDirection()
 
 bool Player::readyToFire()
 {
-    return (bullet_counter==0);
+    return (bullet_counter == 0);
 }
 
 void Player::hightenBulletCounter()

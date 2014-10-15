@@ -1,10 +1,11 @@
 #ifndef MOVINGOBJECT_H
 #define MOVINGOBJECT_H
 
-#include"Geometry.h"
-#include"Constants.h"
-#include<cmath>
 #include<SDL2/SDL.h>
+#include<cmath>
+#include"Constants.h"
+#include"Geometry.h"
+#include"MyMath.h"
 
 class MovingObject
 {
@@ -14,9 +15,9 @@ class MovingObject
         virtual void render();
         virtual bool isDead();
         virtual void update_interp(int interpolation);
-        
+
         /* velocity & position information */
-        vec2df vel;        
+        vec2df vel;
         vec2di pos;
         vec2di interppos;
         vec2df remainder;

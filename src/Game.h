@@ -14,10 +14,10 @@
 #include<iostream>
 #include<vector>
 #include<memory>
-#include<algorithm> 
+#include<algorithm>
 
 class Game{
-    
+
     public:
         Game(SDL_Window*, SDL_Renderer*);
         ~Game();
@@ -27,12 +27,11 @@ class Game{
     private:
         //methods
         void update();
-        bool init_SDL;
         bool gameOver;
         void handleKeys();
-        //fields        
-        SDL_Window*   gameWindow;       
-        SDL_Renderer* gameRenderer;       
+        //fields
+        SDL_Window*   gameWindow;
+        SDL_Renderer* gameRenderer;
         Level       level;
         Player      player;
         Tilemanager tilemanager;
