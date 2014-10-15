@@ -103,6 +103,26 @@ void Player::handleCollision()
                 tile.y1 = (i + 1) * SCALEDBLOCK;
                 Geometry::getMTV(bounding, tile, &x, &y);
                 pos.x = pos.x + x;
+                if (x != 0)
+                {
+                    interpXcnt = 1;
+                    vel.x = 0;
+                }
+                updateBounding();
+            }
+        }
+    }
+    for (int i = mini; i <= maxi; i++)
+    {
+        for (int j = minj; j <= maxj; j++)
+        {
+            if (level.isSolid(i, j))
+            {
+                tile.x0 = j * SCALEDBLOCK;
+                tile.x1 = (j + 1) * SCALEDBLOCK;
+                tile.y0 = i * SCALEDBLOCK;
+                tile.y1 = (i + 1) * SCALEDBLOCK;
+                Geometry::getMTV(bounding, tile, &x, &y);
                 pos.y = pos.y + y;
                 if (x != 0)
                 {
@@ -115,7 +135,7 @@ void Player::handleCollision()
     }
     if (solidAbove())
     {
-        vel.y = 0;
+        if (vel.y < 0) vel.y = 0;
     }
     if (solidBelow())
     {
@@ -173,7 +193,7 @@ void Player::stop()
 
 void Player::jump()
 {
-    if (inJump) return;
+    if (inJump || vel.y < 0) return;
     vel.y = -JUMPSPEED;
     inJump = true;
 }
