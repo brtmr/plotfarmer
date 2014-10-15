@@ -9,7 +9,7 @@ int main(int argc, char** argv)
     float x,y;
     rectangle tile;
     rectangle player;
-
+    
     std::cout << "MTV test" << std::endl;
     std::cout << "Test 1: Rectangles do not intersect." << std::endl;
     player.x0 = 1;
@@ -25,7 +25,7 @@ int main(int argc, char** argv)
     getMTV(player, tile, &x, &y);
     std::cout<< "MTV x: " << x << std::endl;
     std::cout<< "MTV y: " << y << std::endl;
-
+    
     std::cout << "Test 2: Rectangles _do_ intersect, narrower penetration on x-Axis" << std::endl;
     player.x0 = 1;
     player.x1 = 6;
@@ -40,7 +40,7 @@ int main(int argc, char** argv)
     getMTV(player, tile, &x, &y);
     std::cout<< "MTV x: " << x << std::endl;
     std::cout<< "MTV y: " << y << std::endl;
-
+    
     std::cout << "Test 3: Rectangles _do_ intersect, narrower penetration on x-Axis" << std::endl;
     player.x0 = 6;
     player.x1 = 11;

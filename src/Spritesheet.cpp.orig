@@ -11,12 +11,12 @@ Spritesheet::Spritesheet(std::string path, int m, int n, int p, SDL_Renderer* ga
 {
     SDL_Surface* spritesSurface = IMG_Load(path.c_str());
     sprites = SDL_CreateTextureFromSurface(
-                  gameRenderer,
-                  spritesSurface
-              );
-    for(int i=0; i<p; i++) {
+        gameRenderer,
+        spritesSurface
+    );
+    for(int i=0; i<p; i++){
         clipRectangles.push_back(createClipRectangle(spritesSurface, m, n, i));
-    }
+        }
     singleWidth  = (spritesSurface->w)/n;
     singleHeight = (spritesSurface->h)/m;
     SDL_FreeSurface(spritesSurface);
@@ -28,7 +28,7 @@ Spritesheet::~Spritesheet()
 }
 
 
-/*
+/* 
  * This functionn returns the clipRectangle for a for the
  * ith sprite (zero-based) in a mxn spritesheet
  * where m is the number of rows

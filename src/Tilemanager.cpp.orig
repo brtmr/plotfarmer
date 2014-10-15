@@ -9,12 +9,12 @@ Tilemanager::Tilemanager(SDL_Renderer* r, Level &l, vec2di &c):
     camera(c)
 {
     skyTexture = SDL_CreateTexture(
-                     gameRenderer,
-                     SDL_PIXELFORMAT_RGBA8888,
-                     SDL_TEXTUREACCESS_TARGET,
-                     SCREEN_WIDTH / SCALE,
-                     SCREEN_HEIGHT / SCALE
-                 );
+        gameRenderer,
+        SDL_PIXELFORMAT_RGBA8888,  
+        SDL_TEXTUREACCESS_TARGET, 
+        SCREEN_WIDTH / SCALE,
+        SCREEN_HEIGHT / SCALE
+        );
     drawSky();
 }
 
@@ -32,12 +32,12 @@ void Tilemanager::render()
         skyTexture,
         NULL,
         NULL
-    );
-
+        );
+    
     SDL_Rect dstRec;
     dstRec.w = SCALEDBLOCK;
     dstRec.h = SCALEDBLOCK;
-
+    
     int tileOffsetX = camera.x / SCALEDBLOCK;
     int tileOffsetY = camera.y / SCALEDBLOCK;
     int pixelOffsetX = tileOffsetX * SCALEDBLOCK - camera.x;
@@ -48,7 +48,7 @@ void Tilemanager::render()
         {
             int iTile = i + tileOffsetY;
             int jTile = j + tileOffsetX;
-
+            
             if (level.isSolid(iTile,jTile))
             {
                 dstRec.x = j * SCALEDBLOCK + pixelOffsetX;
@@ -58,9 +58,9 @@ void Tilemanager::render()
                     spritesheet.sprites,
                     &(spritesheet.clipRectangles.at(level.tiles[iTile][jTile])),
                     &(dstRec)
-                );
+                    );
             }
-
+            
             if (DEBUG)
             {
                 if ( iTile < level.height && jTile < level.width )
@@ -82,5 +82,5 @@ void Tilemanager::drawSky()
 {
     SDL_Surface* skySurface = IMG_Load("sprites/sky.png");
     skyTexture = SDL_CreateTextureFromSurface
-                 (gameRenderer, skySurface);
+        (gameRenderer, skySurface);
 }

@@ -1,21 +1,21 @@
 #include "Geometry.h"
-#include <cmath>
+#include <cmath> 
 
 using namespace std;
 
 /*
- * Provides various Geometry related functions,
+ * Provides various Geometry related functions, 
  * mainly used for collision detection and handling
  */
 
 /* returns the minimum translation vector for the player to leave the
  * tile */
-void Geometry::getMTV(rectangle player, rectangle tile, int *x, int *y) {
+void Geometry::getMTV(rectangle player, rectangle tile, int *x, int *y){
     *x = 0;
     *y = 0;
     //rectangles do _not_ intersect.
-    if ( ((tile.x1<=player.x0) || (tile.x0>=player.x1))
-            ||  ((tile.y1<=player.y0) || (tile.y0>=player.y1)) )
+    if ( ((tile.x1<=player.x0) || (tile.x0>=player.x1)) 
+     ||  ((tile.y1<=player.y0) || (tile.y0>=player.y1)) )
     {
         return;
     }

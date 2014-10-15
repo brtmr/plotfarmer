@@ -1,15 +1,15 @@
 #include"MagicBullet.h"
 
 MagicBullet::MagicBullet(int x, int y, SDL_Renderer *r, vec2di &c, Level &l, int direction):
-    super(x,y,r,c,false),
-    alive(true),
-    spritesheet("sprites/ball.png",1,1,1,r),
-    timer(0),
-    level(l)
+super(x,y,r,c,false),
+alive(true),
+spritesheet("sprites/ball.png",1,1,1,r),
+timer(0),
+level(l)
 {
     if (direction==DIRECTIONRIGHT)
-
-        vel.x = SPEEDLIMIT;
+    
+    vel.x = SPEEDLIMIT;
     else vel.x = - SPEEDLIMIT;
     vel.y = 0;
 }
@@ -26,18 +26,18 @@ void MagicBullet::render()
         renderpos.y-camera.y,
         spritesheet.singleWidth*SCALE,
         spritesheet.singleHeight*SCALE
-    };
+        };
     SDL_RenderCopy(gameRenderer,
-                   spritesheet.sprites,
-                   NULL,
-                   &(dstRec));
+        spritesheet.sprites,
+        NULL,
+        &(dstRec));
 }
 
 void MagicBullet::update()
 {
     super::update();
     ++timer;
-
+    
     //check wether a collision with the level occured.
     int offset = (vel.x > 0) ? spritesheet.singleWidth*SCALE : 0;
     int TileX = ((pos.x+offset)/SCALEDBLOCK);

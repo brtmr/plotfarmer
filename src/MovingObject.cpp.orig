@@ -25,7 +25,7 @@ void MovingObject::update()
     remainder.x = diffx - roundf(diffx);
     diffy = vel.y + remainder.y;
     pos.y = pos.y + roundf(diffy);
-    remainder.y = diffy - roundf(diffy);
+    remainder.y = diffy - roundf(diffy); 
 }
 
 void MovingObject::update_interp(int interpolation)
@@ -47,8 +47,6 @@ void MovingObject::update_interp(int interpolation)
     //setCamera();
 }
 
-void MovingObject::render() {}
+void MovingObject::render(){}
 
-bool MovingObject::isDead() {
-    return false;
-}
+bool MovingObject::isDead(){return false;}
