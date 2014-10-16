@@ -1,14 +1,14 @@
 #include"MovingObject.h"
 
 MovingObject::MovingObject(int x, int y, SDL_Renderer *r, vec2di &c, bool hW):
+    gameRenderer(r),
+    camera(c),
     vel({0, 0}),
     pos({x, y}),
     interppos({x, y}),
     remainder({0, 0}),
     interpremainder({0, 0}),
     hasWeight(hW),
-    gameRenderer(r),
-    camera(c),
     interpXcnt(0)
 {}
 

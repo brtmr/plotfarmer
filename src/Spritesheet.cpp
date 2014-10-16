@@ -14,11 +14,12 @@ Spritesheet::Spritesheet(std::string path, int m, int n, int p, SDL_Renderer* ga
                   gameRenderer,
                   spritesSurface
               );
-    for(int i=0; i<p; i++) {
+    for (int i = 0; i < p; i++)
+    {
         clipRectangles.push_back(createClipRectangle(spritesSurface, m, n, i));
     }
-    singleWidth  = (spritesSurface->w)/n;
-    singleHeight = (spritesSurface->h)/m;
+    singleWidth  = (spritesSurface->w) / n;
+    singleHeight = (spritesSurface->h) / m;
     SDL_FreeSurface(spritesSurface);
 }
 
@@ -36,12 +37,28 @@ Spritesheet::~Spritesheet()
  * */
 SDL_Rect Spritesheet::createClipRectangle(SDL_Surface* spritesheet, int m, int n, int i)
 {
-    int w = (spritesheet->w)/n;
-    int h = (spritesheet->h)/m;
+    int w = (spritesheet->w) / n;
+    int h = (spritesheet->h) / m;
     SDL_Rect result;
     result.w = w;
     result.h = h;
-    result.x = (i%n)*w;
-    result.y = (i/n)*h;
+    result.x = (i % n) * w;
+    result.y = (i / n) * h;
     return result;
+}
+
+int Spritesheet::drawSpriteAt(SDL_Renderer *renderer, int x, int y, int n, bool flip)
+{
+    SDL_Rect srcRect;
+    SDL_Rect dstRect;
+    srcRect = clipRectangles.at(n);
+    dstRect.x = x;
+    dstRect.y = y;
+    dstRect.w = (srcRect.w) * SCALE;
+    dstRect.h = (srcRect.h) * SCALE;
+    if (!flip)
+        return SDL_RenderCopy( renderer, sprites, &srcRect, &dstRect);
+    else
+        return SDL_RenderCopyEx( renderer, sprites, &srcRect, &dstRect, 0, nullptr,
+                                 SDL_FLIP_HORIZONTAL);
 }

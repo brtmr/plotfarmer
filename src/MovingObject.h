@@ -16,17 +16,20 @@ class MovingObject
         virtual bool isDead();
         virtual void update_interp(int interpolation);
 
-        /* velocity & position information */
+    protected:
+        SDL_Renderer *gameRenderer;
+        vec2di &camera;
         vec2df vel;
         vec2di pos;
+        /* velocity & position information */
         vec2di interppos;
         vec2df remainder;
         vec2df interpremainder;
         //determines wether the object is influenced by gravity
         bool hasWeight;
-        SDL_Renderer *gameRenderer;
-        vec2di &camera;
         int interpXcnt;
+
+    private:
 };
 
 #endif

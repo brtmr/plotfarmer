@@ -8,8 +8,10 @@
 #include<SDL2/SDL.h>
 #include<iostream>
 
+#define BULLETSIZE 6
+
 class MagicBullet : public MovingObject{
-    
+
     public:
         MagicBullet(int x, int y, SDL_Renderer *r, vec2di &c, Level &l, int direction);
         ~MagicBullet();
@@ -18,7 +20,7 @@ class MagicBullet : public MovingObject{
         bool isDead();
         typedef MovingObject super; //for calling the super class
 
-    
+
     private:
         bool alive;
         Spritesheet spritesheet;

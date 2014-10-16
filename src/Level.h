@@ -19,7 +19,6 @@ class Level
         int unscaledHeight;
         std::vector<std::vector<int>> tiles;
     private:
-        
 };
 
 #endif

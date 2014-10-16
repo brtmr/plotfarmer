@@ -12,14 +12,14 @@
 #include<vector>
 
 class Tilemanager{
-    
+
     public:
-        
+
         Tilemanager(SDL_Renderer* r, Level &l, vec2di &c);
         ~Tilemanager();
         void render();
         void drawSky();
-        
+
     private:
         //functions
         void getClipRectangle(int n);
@@ -33,5 +33,5 @@ class Tilemanager{
         /* for splitting the level into chunks to be drawn*/
 
     };
-    
+
 #endif

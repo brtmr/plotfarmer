@@ -2,7 +2,7 @@
 #define CONSTANTS_H
 
 /* sizes & scales */
-const int SCALE = 4;
+const int SCALE = 3;
 const int BLOCKSIZE = 16;
 const int SMALLOFFSET = 0;
 const int SCALEDBLOCK = BLOCKSIZE * SCALE;
@@ -31,7 +31,7 @@ const int CHUNKBORDER = 5;
 const int REDRAWLIMIT = 1;
 
 /* display the grid + some info for debugging */
-const bool DEBUG = 1;
+const bool DEBUG = 0;
 
 /* DeWitters Game Loop */
 const int TICKS_PER_SECOND = 40;
@@ -39,5 +39,5 @@ const int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
 const int MAX_FRAMESKIP = 5;
 
 const int BULLET_LIFETIME = 20;
-const int FRAMES_PER_BULLET = 15;
+const int FRAMES_PER_BULLET = 3;
 #endif

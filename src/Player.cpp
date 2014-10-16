@@ -5,8 +5,8 @@ Player::Player(SDL_Renderer *renderer, Level &l, vec2di &c, int x, int y):
     super(x*SCALEDBLOCK, y*SCALEDBLOCK, renderer, c, true),
     spritesheet("sprites/wiz_staff_down.png", 1, 3, 3, renderer),
     level(l),
-    height(spritesheet.singleHeight*SCALE),
-    width(spritesheet.singleWidth*SCALE),
+    height(27 * SCALE),
+    width(24 * SCALE),
     direction(DIRECTIONRIGHT),
     running(false),
     inJump(true),
@@ -198,54 +198,28 @@ void Player::jump()
     inJump = true;
 }
 
-vec2di Player::getTile()
-{
-    vec2di result;
-    result.x = pos.y / SCALEDBLOCK;
-    result.y = pos.x / SCALEDBLOCK;
-    return result;
-}
-
 void Player::render()
 {
-    vec2di renderpos;
-    renderpos.x = (interppos.x) + roundf(interpremainder.x);
-    renderpos.y = (interppos.y) + roundf(interpremainder.y);
-    dstRect.x = renderpos.x - camera.x;
-    dstRect.y = renderpos.y - camera.y;
-    if (direction == DIRECTIONRIGHT)
-        SDL_RenderCopy(
-            gameRenderer,
-            spritesheet.sprites,
-            getCurrentRectangle(),
-            &dstRect
-        );
-    if (direction == DIRECTIONLEFT)
-        SDL_RenderCopyEx(
-            gameRenderer,
-            spritesheet.sprites,
-            getCurrentRectangle(),
-            &dstRect,
-            0,
-            NULL,
-            SDL_FLIP_HORIZONTAL
-        );
-}
-
-SDL_Rect* Player::getCurrentRectangle()
-{
+    int x, y, n;
+    x = (interppos.x) + roundf(interpremainder.x) - camera.x;
+    y = (interppos.y) + roundf(interpremainder.y) - camera.y;
     if (inJump)
-        return &(spritesheet.clipRectangles.at(2));
-    if (!running)
-        return &(spritesheet.clipRectangles.at(0));
-    int i;
-    int spriteDuration = 80;
-    long which = SDL_GetTicks() / spriteDuration;
-    if (which % 4 == 0) i = 0;
-    if (which % 4 == 1) i = 1;
-    if (which % 4 == 2) i = 2;
-    if (which % 4 == 3) i = 1;
-    return &(spritesheet.clipRectangles.at(i));
+        n = 2;
+    else if (!running)
+        n = 0;
+    else
+    {
+        int spriteDuration = 80;
+        long which = SDL_GetTicks() / spriteDuration;
+        if (which % 4 == 0) n = 0;
+        if (which % 4 == 1) n = 1;
+        if (which % 4 == 2) n = 2;
+        if (which % 4 == 3) n = 1;
+    }
+    if (direction == DIRECTIONRIGHT)
+        spritesheet.drawSpriteAt(gameRenderer, x, y, n, false);
+    if (direction == DIRECTIONLEFT)
+        spritesheet.drawSpriteAt(gameRenderer, x, y, n, true);
 }
 
 /* just updates the interpolated values. does _not_ change game state */

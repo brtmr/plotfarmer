@@ -4,7 +4,7 @@
 Tilemanager::Tilemanager(SDL_Renderer* r, Level &l, vec2di &c):
     redraw(true),
     gameRenderer(r),
-    spritesheet("sprites/16blox.png",1,5,5,r),
+    spritesheet("sprites/16blox.png", 1, 5, 5, r),
     level(l),
     camera(c)
 {
@@ -42,30 +42,28 @@ void Tilemanager::render()
     int tileOffsetY = camera.y / SCALEDBLOCK;
     int pixelOffsetX = tileOffsetX * SCALEDBLOCK - camera.x;
     int pixelOffsetY = tileOffsetY * SCALEDBLOCK - camera.y;
-    for (int i=0 ; i<(SCREEN_HEIGHT / SCALEDBLOCK) + 2  ; i++)
+    int x, y, n;
+    for (int i = 0 ; i < (SCREEN_HEIGHT / SCALEDBLOCK) + 2  ; i++)
     {
-        for (int j=0 ; j<(SCREEN_WIDTH / SCALEDBLOCK) + 2 ; j++)
+        for (int j = 0 ; j < (SCREEN_WIDTH / SCALEDBLOCK) + 2 ; j++)
         {
             int iTile = i + tileOffsetY;
             int jTile = j + tileOffsetX;
 
-            if (level.isSolid(iTile,jTile))
+            if (level.isSolid(iTile, jTile))
             {
-                dstRec.x = j * SCALEDBLOCK + pixelOffsetX;
-                dstRec.y = i * SCALEDBLOCK + pixelOffsetY;
-                SDL_RenderCopy(
-                    gameRenderer,
-                    spritesheet.sprites,
-                    &(spritesheet.clipRectangles.at(level.tiles[iTile][jTile])),
-                    &(dstRec)
-                );
+
+                x = j * SCALEDBLOCK + pixelOffsetX;
+                y = i * SCALEDBLOCK + pixelOffsetY;
+                n = level.tiles[iTile][jTile];
+                spritesheet.drawSpriteAt(gameRenderer, x, y, n, false);
             }
 
             if (DEBUG)
             {
                 if ( iTile < level.height && jTile < level.width )
                 {
-                    SDL_SetRenderDrawColor(gameRenderer,0,0,0,0);
+                    SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 0);
                     dstRec.x = j * SCALEDBLOCK + pixelOffsetX;
                     dstRec.y = i * SCALEDBLOCK + pixelOffsetY;
                     SDL_RenderDrawRect(

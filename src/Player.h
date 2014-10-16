@@ -34,7 +34,6 @@ class Player : MovingObject{
         typedef MovingObject super; //for calling the super class
 
     private:
-        //functions:
         void handleCollision();
         void updateBounding();
         bool solidAbove();
@@ -42,12 +41,8 @@ class Player : MovingObject{
         void setCamera();
         void stayInLevel();
         SDL_Rect* getCurrentRectangle();
-        //fields
-        /* SDL stuff */
-        /* references to game objects & structs */
         Spritesheet spritesheet;
         Level &level;
-        /* velocity & position informatien */
         int height;
         int width;
         short direction;
