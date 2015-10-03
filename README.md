@@ -1,5 +1,5 @@
 #plotfarmer
- 
+![screenshot](https://raw.githubusercontent.com/brtmr/plotfarmer/master/screenshot.png)
 A platforming game written in C++, using SDL2
 
 #building
